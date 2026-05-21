@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap");
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif, "Noto Sans JP";
+  line-height: 1.5;
+  font-size: 18px;
+  font-weight: 400;
+
+  color-scheme: dark light;
+}
+
+:root {
+  color: rgba(230, 230, 255, 1);
+  background-color: #242424;
+
+  --color-white: #fff;
+  --color-black: #000;
+  --color-pink: pink;
+
+  --color-normal-box-background: rgba(3, 3, 3, 0.5);
+  --color-font-on-deep-background: var(--color-white);
+  --color-layout-content-background: rgba(15, 15, 25, 0.8);
+  --color-header-background: rgba(180, 40, 40, 0.8);
+  --color-sidebar-background: rgba(2, 2, 2, 0.8);
+  --color-footer-background: rgba(0, 100, 0, 0.8);
+
+  --shadow-normal-box-shadow: 0 1px 8px 0 rgba(1, 1, 1, 1);
+
+  --font-size-logo: 1.25rem;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: rgba(0, 0, 0, 1);
+    background-color: #ffffff;
+  }
+
+  :root {
+    --color-normal-box-background: rgba(255, 255, 255, 0.6);
+    --color-layout-content-background: rgba(255, 192, 203, 0.8);
+    --color-header-background: rgba(255, 100, 100, 0.6);
+    --color-sidebar-background: rgba(255, 255, 255, 0.8);
+    --color-footer-background: rgba(0, 128, 0, 0.8);
+
+    --shadow-normal-box-shadow: 0 1px 8px 0 rgba(155, 155, 155, 1);
+  }
+}
+
+body {
+  margin: 0;
+  font-size: 1rem;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  :root {
+    font-size: calc(18px * 1.25);
+  }
+}
+
+label {
+  font-size: 1.1rem;
+}
+
+body input {
+  font-size: 1rem;
+}

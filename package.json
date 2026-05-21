@@ -1,0 +1,15 @@
+{
+  "name": "neonya",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @neonya/web dev",
+    "build": "pnpm --filter @neonya/web build",
+    "docs:dev": "pnpm --filter @neonya/docs docs:dev",
+    "docs:build": "pnpm --filter @neonya/docs docs:build"
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@10.11.0"
+}

@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: neonya
+  labels:
+    app: neonya
+spec:
+  restartPolicy: 'Always'
+  containers:
+    - name: db
+      image: docker.io/library/postgres:latest
+      ports:
+        - containerPort: 5432
+          hostPort: 5432
+      env:
+        - name: POSTGRES_DB
+          value: forum
+        - name: POSTGRES_USER
+          value: forum_user
+        - name: POSTGRES_PASSWORD
+          value: password
+      volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql
+        - name: dshm
+          mountPath: /dev/shm
+  volumes:
+    - name: postgres-data
+      hostPath:
+        path: ./database/data
+        type: DirectoryOrCreate
+    - name: dshm
+      emptyDir:
+        medium: Memory
+        sizeLimit: '128Mi'
