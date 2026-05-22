@@ -79,17 +79,20 @@ func Register(db *gorm.DB, info *RegisterInfo) (*UserPublicInfo, error) { ... }
 
 ## Style
 
-| Aspect             | Rule                                                                                               |
-| ------------------ | -------------------------------------------------------------------------------------------------- |
-| Go indent          | tabs, width 4                                                                                      |
-| TS/Vue/JSON indent | spaces, width 2                                                                                    |
-| TS semicolons      | no                                                                                                 |
-| TS quotes          | single                                                                                             |
-| TS trailing commas | none                                                                                               |
-| Comments           | only add when logic is non-obvious; no AI-generated comments                                       |
-| Go formatting      | `gofmt` standard                                                                                   |
-| Prettier           | `.prettierrc` at root, `arrowParens: "avoid"`                                                      |
-| Markdown prose     | Chinese sentences end with `。`; break lines at sentence boundaries when a line would exceed width |
+| Aspect                 | Rule                                                                                               |
+| ---------------------- | -------------------------------------------------------------------------------------------------- |
+| Go indent              | tabs, width 4                                                                                      |
+| TS/Vue/JSON indent     | spaces, width 2                                                                                    |
+| TS semicolons          | no                                                                                                 |
+| TS quotes              | single                                                                                             |
+| TS trailing commas     | none                                                                                               |
+| Comments               | only add when logic is non-obvious; no AI-generated comments                                       |
+| Go formatting          | `gofmt` standard                                                                                   |
+| Prettier               | `.prettierrc` at root, `arrowParens: "avoid"`                                                      |
+| Naming                 | use full words, no abbreviations (`address` not `addr`, `sourceName` not `dsn`)                    |
+| One-liner calls        | prefer single call expressing intent (`strings.CutPrefix` over `HasPrefix` + `TrimPrefix`)         |
+| Intermediate variables | omit when the inline expression is self-explanatory (`f(mustGetenv("K"))` not `v := ...; f(v)`)    |
+| Markdown prose         | Chinese sentences end with `。`; break lines at sentence boundaries when a line would exceed width |
 
 ## Theme
 
