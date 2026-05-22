@@ -4,11 +4,11 @@ Mono-repo with pnpm workspace. 喵玉殿新版论坛。
 
 ## Directory ownership
 
-| Path | Package | Stack |
-|------|---------|-------|
-| `apps/server/` | Go module `github.com/NSDN/neonya/apps/server` | Gin + GORM + PostgreSQL |
-| `apps/web/` | `@neonya/web` | Vue 3 + Vite + Naive UI + Pinia + ofetch |
-| `docs/` | `@neonya/docs` | VitePress |
+| Path           | Package                                        | Stack                                    |
+| -------------- | ---------------------------------------------- | ---------------------------------------- |
+| `apps/server/` | Go module `github.com/NSDN/neonya/apps/server` | Gin + GORM + PostgreSQL                  |
+| `apps/web/`    | `@neonya/web`                                  | Vue 3 + Vite + Naive UI + Pinia + ofetch |
+| `docs/`        | `@neonya/docs`                                 | VitePress                                |
 
 ## Developer commands
 
@@ -75,20 +75,21 @@ func Register(db *gorm.DB, info *RegisterInfo) (*UserPublicInfo, error) { ... }
 ### Both sides
 
 - **No abbreviations** in names — use full words (`authorization` not `auth`, `appcontext` not `appctx`)
-- Domain term renaming is pending a future session: `authorization→auth`, `plates→plate`, `topics→post` are expected but not yet applied
+- Domain term renaming is pending a future session: `plates→plate`, `topics→topic`
 
 ## Style
 
-| Aspect | Rule |
-|--------|------|
-| Go indent | tabs, width 4 |
-| TS/Vue/JSON indent | spaces, width 2 |
-| TS semicolons | yes |
-| TS quotes | double |
-| TS trailing commas | none |
-| Comments | only add when logic is non-obvious; no AI-generated comments |
-| Go formatting | `gofmt` standard |
-| Prettier | `.prettierrc` at root, `arrowParens: "avoid"` |
+| Aspect             | Rule                                                                                               |
+| ------------------ | -------------------------------------------------------------------------------------------------- |
+| Go indent          | tabs, width 4                                                                                      |
+| TS/Vue/JSON indent | spaces, width 2                                                                                    |
+| TS semicolons      | no                                                                                                 |
+| TS quotes          | single                                                                                             |
+| TS trailing commas | none                                                                                               |
+| Comments           | only add when logic is non-obvious; no AI-generated comments                                       |
+| Go formatting      | `gofmt` standard                                                                                   |
+| Prettier           | `.prettierrc` at root, `arrowParens: "avoid"`                                                      |
+| Markdown prose     | Chinese sentences end with `。`; break lines at sentence boundaries when a line would exceed width |
 
 ## Theme
 
