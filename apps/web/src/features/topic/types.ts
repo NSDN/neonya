@@ -1,4 +1,4 @@
-import type { PlateId } from '../plates'
+import type { PlateId } from '../plate'
 
 /** 帖子共通信息 */
 export interface TopicCore {

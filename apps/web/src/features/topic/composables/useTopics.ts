@@ -1,7 +1,7 @@
 import { type TopicListItem } from '../types'
 // import { useRouter } from 'vue-router'
 import { getTopics } from '../apis/topics'
-import { useCurrentPlate } from '@/features/plates/composables/useCurrentPlate'
+import { useCurrentPlate } from '@/features/plate/composables/useCurrentPlate'
 import { Option } from '@/shared/utils/rust'
 import { useTopicsStore } from '../stores/topics'
 import { computed } from 'vue'

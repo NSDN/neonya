@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { usePlates } from '@/features/plates/composables/usePlates'
-import { useCurrentPlate } from '@/features/plates/composables/useCurrentPlate'
+import { usePlates } from '@/features/plate/composables/usePlates'
+import { useCurrentPlate } from '@/features/plate/composables/useCurrentPlate'
 import { onMounted } from 'vue'
 
 import PlateOnSidebar from './PlateOnSidebar.vue'

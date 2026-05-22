@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TopicListItem } from '@/features/topics/types'
+import type { TopicListItem } from '@/features/topic/types'
 
 defineProps<{
   list: TopicListItem[]

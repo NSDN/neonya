@@ -1,4 +1,4 @@
-import { useCurrentPlate } from '@/features/plates/composables/useCurrentPlate'
+import { useCurrentPlate } from '@/features/plate/composables/useCurrentPlate'
 
 export function useInitStoreWithStorage() {
   const { initCurrentPlateWithStorage } = useCurrentPlate()

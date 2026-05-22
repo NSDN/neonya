@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTopics } from '@/features/topics'
+import { useTopics } from '@/features/topic'
 
 import Announcement from '../components/Announcement.vue'
 import ArticleList from '../components/ArticleList.vue'

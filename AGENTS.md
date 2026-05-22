@@ -66,7 +66,7 @@ func Register(db *gorm.DB, info *RegisterInfo) (*UserPublicInfo, error) { ... }
 
 ### Frontend — feature-based modules
 
-- `src/features/authorization/`, `plates/`, `topics/` — each contains `apis/`, `composables/`, `stores/`, `types.ts`
+- `src/features/authorization/`, `plate/`, `topic/` — each contains `apis/`, `composables/`, `stores/`, `types.ts`
 - `src/shared/` — cross-cutting: `components/`, `composables/`, `services/`, `utils/`, `constants/`
 - `src/stores/` — global Pinia stores (not `store/`)
 - `@` alias resolves to `/src`

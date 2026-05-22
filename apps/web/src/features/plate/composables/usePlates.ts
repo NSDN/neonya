@@ -7,7 +7,7 @@ import { PLATE_IDS, type Plate, type PlateId } from '../types'
 import { Option, Result } from '@/shared/utils/rust'
 import { useCurrentPlate } from './useCurrentPlate'
 import { useRouter } from 'vue-router'
-import { useTopics } from '@/features/topics'
+import { useTopics } from '@/features/topic'
 
 export function usePlates() {
   const router = useRouter()

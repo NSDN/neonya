@@ -8,12 +8,12 @@ import (
 )
 
 func OpenDatabase(host string, port string, user string, password string, dbname string) (*gorm.DB, error) {
-	dsn := fmt.Sprintf(
+	sourceName := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname,
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(sourceName), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
@@ -22,12 +22,12 @@ func OpenDatabase(host string, port string, user string, password string, dbname
 }
 
 func OpenDatabaseSimple(dbname string, user string, password string) (*gorm.DB, error) {
-	dsn := fmt.Sprintf(
+	sourceName := fmt.Sprintf(
 		"dbname=%s user=%s password=%s sslmode=disable",
 		dbname, user, password,
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(sourceName), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}

@@ -38,27 +38,13 @@ func mustGetenv(key string) string {
 	return value
 }
 
-func openDatabase() *gorm.DB {
-	dbname := mustGetenv("POSTGRES_DB")
-	user := mustGetenv("POSTGRES_USER")
-	password := mustGetenv("POSTGRES_PASSWORD")
-
-	db, err := shared.OpenDatabaseSimple(dbname, user, password)
-
-	if err != nil {
-		log.Fatalf("Database open error: %v", err)
-	}
-
-	return db
-}
-
-func setupRouter(db *gorm.DB, tokenKey string) *gin.Engine {
+func setupRouter(db *gorm.DB, tokenKey string, frontendDist string) *gin.Engine {
 	router := gin.Default()
 
 	router.Use(shared.CORSMiddleware())
 	router.Use(shared.ValidateAuth(tokenKey))
 
-	router.NoRoute(shared.NotFound)
+	router.NoRoute(shared.SPANoRoute(frontendDist))
 
 	router.GET("/ping", func(context *gin.Context) {
 		context.String(200, "pong")
@@ -73,14 +59,29 @@ func setupRouter(db *gorm.DB, tokenKey string) *gin.Engine {
 	return router
 }
 
+func openDatabase() *gorm.DB {
+	db, err := shared.OpenDatabaseSimple(
+		mustGetenv("POSTGRES_DB"),
+		mustGetenv("POSTGRES_USER"),
+		mustGetenv("POSTGRES_PASSWORD"),
+	)
+
+	if err != nil {
+		log.Fatalf("Database open error: %v", err)
+	}
+
+	return db
+}
+
 func main() {
 	db := openDatabase()
 	tokenKey := mustGetenv(config.ENV_TOKEN_KEY)
 	port := mustGetenv(config.ENV_APPLICATION_PORT)
+	frontendDist := os.Getenv(config.ENV_FRONTEND_DIST)
 
-	router := setupRouter(db, tokenKey)
+	router := setupRouter(db, tokenKey, frontendDist)
 
-	addr := fmt.Sprintf(":%s", port)
-	log.Printf("Server starting on %s", addr)
-	router.Run(addr)
+	address := fmt.Sprintf(":%s", port)
+	log.Printf("Server starting on %s", address)
+	router.Run(address)
 }

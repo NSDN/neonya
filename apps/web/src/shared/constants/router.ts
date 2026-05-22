@@ -1,4 +1,4 @@
-import { PLATE_IDS } from '@/features/plates'
+import { PLATE_IDS } from '@/features/plate'
 import type { RouteRecordRedirectOption } from 'vue-router'
 
 export const ROUTE_PATHS = {

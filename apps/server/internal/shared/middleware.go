@@ -19,6 +19,19 @@ func NotFound(context *gin.Context) {
 	)
 }
 
+func SPANoRoute(indexPath string) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		path := context.Request.URL.Path
+
+		if strings.HasPrefix(path, "/api") || indexPath == "" {
+			NotFound(context)
+			return
+		}
+
+		context.File(indexPath)
+	}
+}
+
 func CORSMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		context.Header("Access-Control-Allow-Origin", "*")
@@ -63,14 +76,17 @@ func ValidateAuth(tokenKey string) gin.HandlerFunc {
 }
 
 func extractBearerToken(authorization string) string {
-	if strings.HasPrefix(authorization, config.AUTHENTICATION_TYPE) {
-		return strings.TrimPrefix(authorization, config.AUTHENTICATION_TYPE)
+	result, found := strings.CutPrefix(authorization, config.AUTHENTICATION_TYPE)
+
+	if !found {
+		return ""
 	}
-	return ""
+
+	return strings.TrimSpace(result)
 }
 
 func parseToken(tokenString string, tokenKey string) (*jwt.Token, error) {
-	return jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+	return jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
