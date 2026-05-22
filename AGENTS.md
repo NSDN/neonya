@@ -101,3 +101,9 @@ Dark mode is default. `useNaiveUIGlobalConfig` returns dark theme first; CSS `:r
 ## Testing
 
 No test runner configured yet. Backend: `go build ./...` is the only automated check. Frontend: `vue-tsc` typecheck.
+
+## Decision records
+
+Architecture and design decisions made during development are documented in
+`docs/source/decisions/`. When context is ambiguous, check there first for
+established decisions before proposing new approaches.

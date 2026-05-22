@@ -24,6 +24,11 @@ function useHomePageSidebar(): DefaultTheme.Sidebar {
         items: [{ text: '需求讨论记录', link: '/prd/discussion-record' }],
       },
       {
+        text: '决策记录',
+        collapsed: false,
+        items: [{ text: '决策记录索引', link: '/decisions/' }],
+      },
+      {
         text: '方式设计',
         collapsed: false,
         items: [{ text: '图片管理', link: '/design/picture' }],
