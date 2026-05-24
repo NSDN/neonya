@@ -106,6 +106,10 @@ Dark mode is default. `useNaiveUIGlobalConfig` returns dark theme first; CSS `:r
 
 No test runner configured yet. Backend: `go build ./...` is the only automated check. Frontend: `vue-tsc` typecheck.
 
+## Hard constraints
+
+- **Never install packages or tools without explicit user approval.** Always ask for consent before running any install command (npm install, go get, pip install, apt, winget, etc.).
+
 ## Decision records
 
 Architecture and design decisions made during development are documented in
