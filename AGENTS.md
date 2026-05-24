@@ -92,7 +92,7 @@ func Register(db *gorm.DB, info *RegisterInfo) (*UserPublicInfo, error) { ... }
 | Naming                 | use full words, no abbreviations (`address` not `addr`, `sourceName` not `dsn`)                    |
 | One-liner calls        | prefer single call expressing intent (`strings.CutPrefix` over `HasPrefix` + `TrimPrefix`)         |
 | Intermediate variables | omit when the inline expression is self-explanatory (`f(mustGetenv("K"))` not `v := ...; f(v)`)    |
-| Markdown prose         | Chinese sentences end with `。`; break lines at sentence boundaries when a line would exceed width |
+| Markdown prose         | Chinese sentences end with `。`; break lines at sentence boundaries when a line would exceed width; use trailing `  ` (double space) for hard line breaks when a sentence continues across multiple lines in rendered output |
 
 ## Theme
 
