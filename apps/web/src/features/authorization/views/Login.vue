@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AuthorizationInput from '../components/AuthorizationInput.vue'
-import BackButton from '@/shared/components/buttons/BackButton.vue'
 import BaseCard from '@/shared/components/cards/BaseCard.vue'
 
 import { useLogin } from '../composables/useLogin'
@@ -29,8 +28,6 @@ const handleEnter = (inputType: string) => {
 
 <template>
   <div id="login">
-    <BackButton />
-
     <BaseCard class="card" direction="column" height="20rem" width="30rem">
       <AuthorizationInput
         v-for="item in formList"
@@ -59,12 +56,6 @@ const handleEnter = (inputType: string) => {
   justify-content: center;
   position: relative;
   width: 100%;
-}
-
-.back-button {
-  left: 0;
-  position: absolute;
-  top: 0;
 }
 
 .card {

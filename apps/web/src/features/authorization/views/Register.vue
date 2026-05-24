@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import BackButton from '@/shared/components/buttons/BackButton.vue'
 import BaseCard from '@/shared/components/cards/BaseCard.vue'
 import AuthorizationInput from '../components/AuthorizationInput.vue'
 
@@ -18,8 +17,6 @@ const infoList: Record<'title' | 'type' | 'key', string>[] = [
 
 <template>
   <div id="register">
-    <BackButton class="back-button" />
-
     <BaseCard class="card" direction="column" height="25rem" width="30rem">
       <AuthorizationInput
         v-for="i in infoList"
@@ -46,12 +43,6 @@ const infoList: Record<'title' | 'type' | 'key', string>[] = [
   justify-content: center;
   position: relative;
   width: 100%;
-}
-
-.back-button {
-  left: 0;
-  position: absolute;
-  top: 0;
 }
 
 .card {

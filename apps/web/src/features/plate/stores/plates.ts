@@ -18,5 +18,7 @@ export const usePlatesStore = defineStore(STORE_ID.PLATES, () => {
     currentPlate.value = toOption(payload)
   }
 
-  return { plates, setPlates, currentPlate, setCurrentPlate }
+  const loading = ref(false)
+
+  return { plates, loading, setPlates, currentPlate, setCurrentPlate }
 })

@@ -36,7 +36,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  width: 24rem;
+  width: 16rem;
 }
 
 .plate-group {
@@ -53,5 +53,11 @@ onMounted(async () => {
 
 .plate-item:first-child {
   margin: 0;
+}
+
+@media (--mobile) {
+  .sidebar {
+    display: none;
+  }
 }
 </style>

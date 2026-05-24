@@ -8,28 +8,24 @@
   border: unset;
   box-shadow: 2px 0 6px 2px #bbb;
   color: #666;
-  opacity: 0;
+  cursor: pointer;
   font-size: 12px;
   font-weight: bold;
   height: 100%;
   left: 0;
+  opacity: 0.4;
   padding: unset;
   position: absolute;
   top: 0;
 }
 
 .sidebar-controller:hover {
-  animation: slideIn 0.1s ease-in-out;
   opacity: 1;
 }
 
-@keyframes slideIn {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
+@media (--mobile) {
+  .sidebar-controller {
+    display: none;
   }
 }
 </style>

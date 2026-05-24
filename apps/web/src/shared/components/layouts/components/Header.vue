@@ -29,9 +29,9 @@ const handleClickLogo = () => {
   display: flex;
   font-size: var(--font-size-logo);
   font-weight: 600;
-  height: 5rem;
+  height: 3rem;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 #logo {

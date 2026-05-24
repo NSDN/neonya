@@ -18,6 +18,10 @@ export function usePlates() {
   const plates = computed<Plate[]>(() => platesStore.plates)
 
   const handleGetPlates = async () => {
+    if (platesStore.loading) return
+    if (plates.value.length > 0) return
+
+    platesStore.loading = true
     const result = await getPlates()
 
     result
@@ -65,6 +69,8 @@ export function usePlates() {
 
         err: error => error.notify()
       })
+
+    platesStore.loading = false
   }
 
   const goToPlate = async (id: PlateId) => {

@@ -2,14 +2,16 @@
 import { CONFIG } from '@/shared/constants'
 import { onMounted, ref } from 'vue'
 
-// import CreateTopicButton from '@/features/create-topic/components/CreateTopicButton.vue'
 import Sidebar from './Sidebar.vue'
 import SidebarController from './SidebarController.vue'
-import Header from './Header.vue'
+import BottomSheet from './BottomSheet.vue'
+import Header from '../components/Header.vue'
+import ScrollToTopButton from '../components/ScrollToTopButton.vue'
 import { useNaiveUIGlobalConfig } from '@/shared/composables'
 
 const displaySidebar = ref<boolean>(true)
 const controlSidebar = () => (displaySidebar.value = !displaySidebar.value)
+const showPlateSheet = ref<boolean>(false)
 
 const { initMessager } = useNaiveUIGlobalConfig()
 onMounted(() => initMessager())
@@ -24,17 +26,20 @@ onMounted(() => initMessager())
 
     <div class="middle">
       <Transition name="slide">
-        <Sidebar v-show="displaySidebar" />
+        <Sidebar v-show="displaySidebar" class="desktop-only" />
       </Transition>
 
       <div class="content">
-        <SidebarController @click="controlSidebar" />
+        <SidebarController class="desktop-only" @click="controlSidebar" />
+        <ScrollToTopButton />
         <slot />
       </div>
     </div>
 
-    <footer>footer</footer>
-    <!-- <CreateTopicButton /> -->
+    <button class="plate-trigger mobile-only" @click="showPlateSheet = true">
+      版块
+    </button>
+    <BottomSheet v-model:show="showPlateSheet" />
   </div>
 </template>
 
@@ -75,11 +80,36 @@ onMounted(() => initMessager())
   position: relative;
 }
 
-#main-layout footer {
-  align-items: center;
-  background: var(--color-footer-background);
-  display: flex;
-  height: 2rem;
-  justify-content: center;
+.plate-trigger {
+  background: var(--color-header-background);
+  border: none;
+  border-radius: 0.5rem;
+  bottom: 2rem;
+  box-shadow: var(--shadow-normal-box-shadow);
+  color: var(--color-white);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.8rem 1.5rem;
+  position: fixed;
+  right: 2rem;
+  z-index: 100;
+}
+
+.desktop-only {
+  display: block;
+}
+
+.mobile-only {
+  display: none;
+}
+
+@media (--mobile) {
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block;
+  }
 }
 </style>

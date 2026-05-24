@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CONFIG } from '@/shared/constants'
-import Header from './DefaultLayout/Header.vue'
+import Header from './components/Header.vue'
 </script>
 
 <template>
@@ -13,8 +13,6 @@ import Header from './DefaultLayout/Header.vue'
     <div class="middle">
       <div class="content"><RouterView /></div>
     </div>
-
-    <footer>footer</footer>
   </div>
 </template>
 
@@ -39,13 +37,5 @@ import Header from './DefaultLayout/Header.vue'
   flex: 1;
   padding: var(--common-content-padding);
   overflow: auto;
-}
-
-#main-layout footer {
-  align-items: center;
-  background: var(--color-footer-background);
-  display: flex;
-  height: 2rem;
-  justify-content: center;
 }
 </style>

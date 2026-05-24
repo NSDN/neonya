@@ -1,15 +1,32 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import type { Plugin } from 'vite'
 
-// https://vite.dev/config/
+const MOBILE_BREAKPOINT = 'max-width: 48em'
+
+function customMediaPlugin(): Plugin {
+  return {
+    name: 'custom-media',
+    enforce: 'pre',
+    transform(code: string, id: string) {
+      if (id.endsWith('.vue') || id.endsWith('.css')) {
+        return code.replace(
+          /@media\s*\(\s*--mobile\s*\)/g,
+          `@media (${MOBILE_BREAKPOINT})`
+        )
+      }
+    }
+  }
+}
+
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [customMediaPlugin(), vue()],
 
   resolve: {
-    alias: { '@': '/src' },
+    alias: { '@': '/src' }
   },
 
   server: {
-    port: 10123,
-  },
+    port: 10123
+  }
 })

@@ -7,7 +7,7 @@ const {
   handleLongTimePushSimpleInfo,
   handleReleaseKey,
   username,
-  userIcon,
+  userIcon
 } = useUserSimpleInfo()
 </script>
 
@@ -28,10 +28,10 @@ const {
       @pointerdown="handleLongTimePushSimpleInfo"
       @pointerup="handleReleaseKey"
     >
-      <img :src="userIcon" alt="长按登出" />
+      <img :src="userIcon" alt="长按头像登出" />
     </button>
 
-    <DefaultHint margin-left="0.3rem" hint="长按登出" />
+    <DefaultHint margin-left="0.3rem" hint="长按头像登出" />
   </div>
 </template>
 
@@ -46,7 +46,7 @@ const {
   box-sizing: border-box;
   font-size: inherit;
   font-weight: inherit;
-  padding: 0.3rem 0.7rem;
+  padding: 0.2rem 0.5rem;
 }
 
 .login-button img {
@@ -54,8 +54,8 @@ const {
   border-radius: 50%;
   border: var(--simple-info_icon-border);
   display: flex;
-  height: 3.5rem;
+  height: 2rem;
   justify-content: center;
-  width: 3.5rem;
+  width: 2rem;
 }
 </style>
