@@ -20,13 +20,12 @@ export async function register({
   password,
   confirmPassword
 }: AuthorizationServices.RegisterInfo): Promise<Result<boolean, ApiError>> {
-  return await request({
-    url: API_URLS.REGISTER,
+  return request(API_URLS.REGISTER, {
     method: HTTPMethods.POST,
-    data: {
+    body: JSON.stringify({
       username,
       password: password && hashSecreate(password),
       confirmPassword: confirmPassword && hashSecreate(confirmPassword)
-    }
+    })
   })
 }

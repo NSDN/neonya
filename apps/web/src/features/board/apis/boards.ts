@@ -7,8 +7,5 @@ import type { Board } from '../types'
 export async function getBoards(): Promise<
   Result<Option<Option<Board>[]>, ApiError>
 > {
-  return request({
-    url: API_URLS.BOARDS,
-    method: 'GET',
-  })
+  return request(API_URLS.BOARDS, { method: 'GET' })
 }

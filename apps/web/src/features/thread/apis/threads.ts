@@ -13,8 +13,7 @@ import type { ApiError } from '@/shared/errors'
 export async function getThreads(
   boardId: string
 ): Promise<Result<Option<Option<ThreadListItem>[]>, ApiError>> {
-  return request({
-    url: `${API_URLS.THREADS}?boardId=${encodeURIComponent(boardId)}`,
+  return request(`${API_URLS.THREADS}?boardId=${encodeURIComponent(boardId)}`, {
     method: 'GET'
   })
 }
