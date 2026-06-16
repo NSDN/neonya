@@ -8,8 +8,9 @@ const props = defineProps<{
 }>()
 
 const background = computed<string>(() => {
-  return `url('https://i.pixiv.cat/img-master/img/2025/07/20/19/53/22/132915510_p1_master1200.jpg')`
-  // return `url(${props.item.background})`
+  // For Showing
+  // return `url('https://i.pixiv.cat/img-master/img/2025/07/20/19/53/22/132915510_p1_master1200.jpg')`
+  return `url(${props.item.background})`
 })
 
 const title = computed<string>(() => {
@@ -33,7 +34,7 @@ const title = computed<string>(() => {
   box-shadow: var(--common-block-box-shadow);
   box-sizing: border-box;
   display: flex;
-  height: 6rem;
+  height: 4.5rem;
   justify-content: center;
   outline: none;
   padding: 0;
@@ -49,7 +50,7 @@ const title = computed<string>(() => {
   background: transparent;
   color: var(--color-white);
   display: flex;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   height: 100%;
   justify-content: center;
   text-shadow: 1px 1px 8px #000;

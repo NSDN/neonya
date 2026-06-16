@@ -1,8 +1,9 @@
 export const CONFIG = {
   /** 最底层背景 */
-  // BASE_BACKGROUND: 'https://i.imgur.com/hcxO1rIh.jpg',
-  BASE_BACKGROUND:
-    'https://i.pixiv.cat/img-master/img/2025/07/20/19/53/22/132915510_p0_master1200.jpg',
+  BASE_BACKGROUND: 'https://i.imgur.com/hcxO1rIh.jpg',
+  // For Showing
+  // BASE_BACKGROUND:
+  //   'https://i.pixiv.cat/img-master/img/2025/07/20/19/53/22/132915510_p0_master1200.jpg',
   /** 游客头像 */
   VISITOR_ICON: 'https://i.imgur.com/SH1uR3f.png',
 

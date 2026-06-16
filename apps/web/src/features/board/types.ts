@@ -1,12 +1,6 @@
 import { PageType } from '@/shared/constants/enum'
 
-export const BOARD_IDS = {
-  LOCALIZATION: 'localization',
-  MUSIC: 'music',
-  CHAT: 'chat'
-} as const
-
-export type BoardId = (typeof BOARD_IDS)[keyof typeof BOARD_IDS]
+export type BoardId = string
 
 /** 版块 */
 export interface Board {

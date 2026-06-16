@@ -1,4 +1,3 @@
-import { BOARD_IDS } from '@/features/board'
 import type { RouteRecordRedirectOption } from 'vue-router'
 
 export const ROUTE_PATHS = {
@@ -32,5 +31,5 @@ export const ROUTE_NAMES = {
 /** 版块根目录重定向 */
 export const BOARD_ROOT_REDIRECT: RouteRecordRedirectOption = {
   name: ROUTE_NAMES.BOARD,
-  params: { id: BOARD_IDS.LOCALIZATION }
+  params: { id: 'localization' }
 } as const

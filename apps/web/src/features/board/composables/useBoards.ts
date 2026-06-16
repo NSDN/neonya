@@ -3,7 +3,7 @@ import { useBoardsStore } from '../stores/boards'
 import { getBoards } from '../apis/boards'
 import { ResponsError } from '@/shared/errors'
 import { ErrorLevel, ROUTE_NAMES } from '@/shared/constants'
-import { BOARD_IDS, type Board, type BoardId } from '../types'
+import { type Board, type BoardId } from '../types'
 import { Option, Result } from '@/shared/utils/rust'
 import { useCurrentBoard } from './useCurrentBoard'
 import { useRouter } from 'vue-router'
@@ -17,9 +17,13 @@ export function useBoards() {
 
   const boards = computed<Board[]>(() => boardsStore.boards)
 
+  function shouldSkipFetch() {
+    const conditions = [boardsStore.loading, boards.value.length > 0]
+    return conditions.some(Boolean)
+  }
+
   const handleGetBoards = async () => {
-    if (boardsStore.loading) return
-    if (boards.value.length > 0) return
+    if (shouldSkipFetch()) return
 
     boardsStore.loading = true
     const result = await getBoards()
@@ -64,7 +68,7 @@ export function useBoards() {
             return
           }
 
-          setCurrentBoardById(BOARD_IDS.LOCALIZATION)
+          setCurrentBoardById(boards[0].id)
         },
 
         err: error => error.notify()

@@ -11,7 +11,7 @@ export function useCurrentBoard() {
   const currentBoardId = computed<BoardId>(() => {
     return boardsStore.currentBoard.match({
       some: board => board.id,
-      none: () => 'localization'
+      none: () => boardsStore.boards[0]?.id ?? 'localization'
     })
   })
 

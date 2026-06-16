@@ -22,6 +22,5 @@ func HandleGetBoards(db *gorm.DB) gin.HandlerFunc {
 }
 
 func RegisterRoutes(api *gin.RouterGroup, db *gorm.DB) {
-	InitBoardList(db)
 	api.GET("/boards", HandleGetBoards(db))
 }
