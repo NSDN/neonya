@@ -42,7 +42,7 @@ src
 │  │  ├─hooks
 │  │  ├─services
 │  │  └─types
-│  └─plate
+│  └─board
 │      ├─components
 │      ├─hooks
 │      ├─services

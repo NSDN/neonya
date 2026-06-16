@@ -77,14 +77,14 @@ CSS 自定义属性不能在 `@media` 条件使用。
 Vue SFC scoped style 各自独立处理无法跨文件共享声明。
 最终在 `vite.config.ts` 中写 `enforce: 'pre'` transform 插件，对 `.vue` / `.css` 文件做字符串替换。
 
-### `usePlates()` 重复请求防御
+### `useBoards()` 重复请求防御
 
-桌面端 Sidebar 和 BottomSheet 由 CSS 控制显隐，两个组件都始终挂载，各自在 `onMounted` 调用 `handleGetPlates()`。
+桌面端 Sidebar 和 BottomSheet 由 CSS 控制显隐，两个组件都始终挂载，各自在 `onMounted` 调用 `handleGetBoards()`。
 
 为避免重复请求：
 
-- Plates store 新增 `loading: ref<boolean>` 标记。
-- `handleGetPlates()` 首行加 `if (loading) return; if (plates.length > 0) return`。
+- Boards store 新增 `loading: ref<boolean>` 标记。
+- `handleGetBoards()` 首行加 `if (loading) return; if (boards.length > 0) return`。
 - 模板顺序保证 Sidebar 先于 BottomSheet 挂载，Sidebar 设置 `loading = true` 后 BottomSheet 调用直接返回。
 
 ## 影响
@@ -105,8 +105,8 @@ layouts/DefaultLayout/
 
 layouts/NoneSidebarLayout.vue ← 删 footer, 更新 import
 
-features/plate/stores/plates.ts    ← 新增 loading 标记
-features/plate/composables/usePlates.ts ← 新增防重复守卫
+features/board/stores/boards.ts    ← 新增 loading 标记
+features/board/composables/useBoards.ts ← 新增防重复守卫
 
 vite.config.ts ← 新增 customMediaPlugin（断点替换）
 
@@ -119,11 +119,11 @@ vite.config.ts ← 新增 customMediaPlugin（断点替换）
 ### 路由 / App 层
 
 - `App.vue`、`useLayout()`、路由配置：**不动**。
-- `PlateContent.vue`、`PlateOnSidebar.vue`：**不动**。
+- `BoardContent.vue`、`BoardOnSidebar.vue`：**不动**。
 - `Login.vue`、`Register.vue`：删除 `BackButton` 引用。
 
-### `usePlates()` composable
+### `useBoards()` composable
 
-Sidebar 和 BottomSheet 各自调用 `usePlates()`。  
-两者由 CSS 控制显隐，始终同时挂载，各自在 `onMounted` 调用 `handleGetPlates()`。  
+Sidebar 和 BottomSheet 各自调用 `useBoards()`。  
+两者由 CSS 控制显隐，始终同时挂载，各自在 `onMounted` 调用 `handleGetBoards()`。  
 通过 store 层 `loading` 标记 + composable 防重复守卫保证只请求一次 API。

@@ -2,7 +2,7 @@ export const STORE_ID = {
   JWT: 'jwt',
   LOGIN_REDIRECT: 'loginRedirect',
   USER: 'user',
-  PLATES: 'plates',
-  TOPICS: 'topics',
+  BOARDS: 'boards',
+  THREADS: 'threads',
   MODAL: 'modal'
 } as const

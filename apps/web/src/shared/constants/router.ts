@@ -1,11 +1,11 @@
-import { PLATE_IDS } from '@/features/plate'
+import { BOARD_IDS } from '@/features/board'
 import type { RouteRecordRedirectOption } from 'vue-router'
 
 export const ROUTE_PATHS = {
   /** 首页 */
   HOME: '/',
   /** 版块 */
-  PLATE: '/plates/:id',
+  BOARD: '/boards/:id',
   /** 授权 */
   AUTHORIZATION: '/authorization',
   /** 登入 */
@@ -20,7 +20,7 @@ export const ROUTE_NAMES = {
   /** 首页 */
   HOME: 'Home',
   /** 版块 */
-  PLATE: 'Plate',
+  BOARD: 'Board',
   /** 登入 */
   LOGIN: 'Login',
   /** 注册 */
@@ -30,7 +30,7 @@ export const ROUTE_NAMES = {
 } as const
 
 /** 版块根目录重定向 */
-export const PLATE_ROOT_REDIRECT: RouteRecordRedirectOption = {
-  name: ROUTE_NAMES.PLATE,
-  params: { id: PLATE_IDS.LOCALIZATION }
+export const BOARD_ROOT_REDIRECT: RouteRecordRedirectOption = {
+  name: ROUTE_NAMES.BOARD,
+  params: { id: BOARD_IDS.LOCALIZATION }
 } as const

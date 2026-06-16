@@ -10,7 +10,7 @@ export enum MessageKeys {
   /** 已登出 */
   LOGGED_OUT = 'LOGGED_OUT',
   /** 缺少版块 ID */
-  MISSING_PLATE_ID = 'MISSING_PLATE_ID',
+  MISSING_BOARD_ID = 'MISSING_BOARD_ID',
   /** 缺少用户信息 */
   MISSING_USER_INFO = 'MISSING_USER_INFO',
   /** 缺少标题 */
@@ -18,7 +18,7 @@ export enum MessageKeys {
   /** 缺少帖文 */
   MISSING_BODY = 'MISSING_BODY',
   /** 是否确认上传帖文 */
-  CONFIRM_SUBMIT_TOPIC = 'CONFIRM_SUBMIT_TOPIC'
+  CONFIRM_SUBMIT_THREAD = 'CONFIRM_SUBMIT_THREAD'
 }
 
 export const messages = {
@@ -27,11 +27,11 @@ export const messages = {
     [MessageKeys.NEED_USERNAME]: '请输入用户名',
     [MessageKeys.NEED_PASSWORD]: '请输入密码',
     [MessageKeys.LOGGED_OUT]: '已登出',
-    [MessageKeys.MISSING_PLATE_ID]: '缺少版块 ID',
+    [MessageKeys.MISSING_BOARD_ID]: '缺少版块 ID',
     [MessageKeys.MISSING_USER_INFO]: '缺少用户信息',
     [MessageKeys.MISSING_TITLE]: '缺少标题',
     [MessageKeys.MISSING_BODY]: '缺少帖文',
-    [MessageKeys.CONFIRM_SUBMIT_TOPIC]: '是否确认上传帖文'
+    [MessageKeys.CONFIRM_SUBMIT_THREAD]: '是否确认上传帖文'
   }
 } as const
 
@@ -74,7 +74,7 @@ export const openConfirmModal = (
     key: MessageKeys
     params?: Record<string, string>
     locale?: string
-  } = { key: MessageKeys.CONFIRM_SUBMIT_TOPIC }
+  } = { key: MessageKeys.CONFIRM_SUBMIT_THREAD }
 ) => {
   const modalStore = useModalStore()
   const message = getMessage(options.key, options.params, options.locale)

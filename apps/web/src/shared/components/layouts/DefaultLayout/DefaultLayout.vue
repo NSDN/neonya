@@ -11,7 +11,7 @@ import { useNaiveUIGlobalConfig } from '@/shared/composables'
 
 const displaySidebar = ref<boolean>(true)
 const controlSidebar = () => (displaySidebar.value = !displaySidebar.value)
-const showPlateSheet = ref<boolean>(false)
+const showBoardSheet = ref<boolean>(false)
 
 const { initMessager } = useNaiveUIGlobalConfig()
 onMounted(() => initMessager())
@@ -36,10 +36,10 @@ onMounted(() => initMessager())
       </div>
     </div>
 
-    <button class="plate-trigger mobile-only" @click="showPlateSheet = true">
+    <button class="board-trigger mobile-only" @click="showBoardSheet = true">
       版块
     </button>
-    <BottomSheet v-model:show="showPlateSheet" />
+    <BottomSheet v-model:show="showBoardSheet" />
   </div>
 </template>
 
@@ -80,7 +80,7 @@ onMounted(() => initMessager())
   position: relative;
 }
 
-.plate-trigger {
+.board-trigger {
   background: var(--color-header-background);
   border: none;
   border-radius: 0.5rem;

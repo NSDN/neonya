@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { usePlates } from '@/features/plate/composables/usePlates'
-import { useCurrentPlate } from '@/features/plate/composables/useCurrentPlate'
+import { useBoards } from '@/features/board/composables/useBoards'
+import { useCurrentBoard } from '@/features/board/composables/useCurrentBoard'
 import { onMounted } from 'vue'
 
-import PlateOnSidebar from './PlateOnSidebar.vue'
+import BoardOnSidebar from './BoardOnSidebar.vue'
 
-const { plates, handleGetPlates, goToPlate } = usePlates()
-const { isCurrentPlate } = useCurrentPlate()
+const { boards, handleGetBoards, goToBoard } = useBoards()
+const { isCurrentBoard } = useCurrentBoard()
 
 onMounted(async () => {
-  await handleGetPlates()
+  await handleGetBoards()
 })
 </script>
 
 <template>
   <div class="sidebar">
-    <div class="plate-group">
-      <PlateOnSidebar
-        class="plate-item"
-        v-for="(item, index) of plates"
+    <div class="board-group">
+      <BoardOnSidebar
+        class="board-item"
+        v-for="(item, index) of boards"
         :key="index.toString()"
         :item="item"
-        :actived="isCurrentPlate(item.id)"
-        @click="() => goToPlate(item.id)"
+        :actived="isCurrentBoard(item.id)"
+        @click="() => goToBoard(item.id)"
       />
     </div>
   </div>
@@ -39,7 +39,7 @@ onMounted(async () => {
   width: 16rem;
 }
 
-.plate-group {
+.board-group {
   flex: 1;
   box-sizing: border-box;
   margin: 1rem -1rem 0;
@@ -47,11 +47,11 @@ onMounted(async () => {
   padding: 0.3rem 1rem;
 }
 
-.plate-item {
+.board-item {
   margin: 1rem 0 0;
 }
 
-.plate-item:first-child {
+.board-item:first-child {
   margin: 0;
 }
 

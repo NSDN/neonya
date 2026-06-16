@@ -48,7 +48,7 @@ pnpm docs:dev                # vitepress (port 10126)
 
 ### Go backend — functional style, no OOP layers
 
-There is **no** `controllers → services → repositories` layering. Each domain package (`internal/auth/`, `internal/plate/`, `internal/post/`) contains handler + service + model in one place, using **pure functions with explicit dependency injection**:
+There is **no** `controllers → services → repositories` layering. Each domain package (`internal/auth/`, `internal/board/`, `internal/thread/`) contains handler + service + model in one place, using **pure functions with explicit dependency injection**:
 
 ```go
 // Handlers return gin.HandlerFunc closures capturing deps
@@ -66,7 +66,7 @@ func Register(db *gorm.DB, info *RegisterInfo) (*UserPublicInfo, error) { ... }
 
 ### Frontend — feature-based modules
 
-- `src/features/authorization/`, `plate/`, `topic/` — each contains `apis/`, `composables/`, `stores/`, `types.ts`
+- `src/features/authorization/`, `board/`, `thread/` — each contains `apis/`, `composables/`, `stores/`, `types.ts`
 - `src/shared/` — cross-cutting: `components/`, `composables/`, `services/`, `utils/`, `constants/`
 - `src/stores/` — global Pinia stores (not `store/`)
 - `@` alias resolves to `/src`
@@ -75,7 +75,6 @@ func Register(db *gorm.DB, info *RegisterInfo) (*UserPublicInfo, error) { ... }
 ### Both sides
 
 - **No abbreviations** in names — use full words (`authorization` not `auth`, `appcontext` not `appctx`)
-- Domain term renaming is pending a future session: `plates→plate`, `topics→topic`
 
 ## Style
 

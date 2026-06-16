@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { usePlates } from '@/features/plate/composables/usePlates'
-import { useCurrentPlate } from '@/features/plate/composables/useCurrentPlate'
-import type { PlateId } from '@/features/plate/types'
+import { useBoards } from '@/features/board/composables/useBoards'
+import { useCurrentBoard } from '@/features/board/composables/useCurrentBoard'
+import type { BoardId } from '@/features/board/types'
 import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps<{
@@ -12,13 +12,13 @@ const emit = defineEmits<{
   'update:show': [value: boolean]
 }>()
 
-const { plates, handleGetPlates, goToPlate } = usePlates()
-const { isCurrentPlate } = useCurrentPlate()
+const { boards, handleGetBoards, goToBoard } = useBoards()
+const { isCurrentBoard } = useCurrentBoard()
 
 const visible = ref(false)
 
 onMounted(async () => {
-  await handleGetPlates()
+  await handleGetBoards()
 })
 
 watch(() => props.show, (value) => {
@@ -35,8 +35,8 @@ function handleAfterLeave() {
   visible.value = false
 }
 
-function handleSelectPlate(id: PlateId) {
-  goToPlate(id)
+function handleSelectBoard(id: BoardId) {
+  goToBoard(id)
   emit('update:show', false)
 }
 </script>
@@ -51,13 +51,13 @@ function handleSelectPlate(id: PlateId) {
               <span class="sheet-title">版块</span>
               <button class="sheet-close" @click="handleClose">✕</button>
             </div>
-            <div class="sheet-plates">
+            <div class="sheet-boards">
               <button
-                v-for="(item, index) of plates"
+                v-for="(item, index) of boards"
                 :key="index.toString()"
-                class="sheet-plate-item"
-                :class="{ actived: isCurrentPlate(item.id) }"
-                @click="() => handleSelectPlate(item.id)"
+                class="sheet-board-item"
+                :class="{ actived: isCurrentBoard(item.id) }"
+                @click="() => handleSelectBoard(item.id)"
               >
                 {{ item.name }}
               </button>
@@ -111,13 +111,13 @@ function handleSelectPlate(id: PlateId) {
   font-size: 1.2rem;
 }
 
-.sheet-plates {
+.sheet-boards {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
 }
 
-.sheet-plate-item {
+.sheet-board-item {
   background: var(--color-normal-box-background);
   border: none;
   border-radius: 0.5rem;
@@ -129,7 +129,7 @@ function handleSelectPlate(id: PlateId) {
   padding: 1rem 0.5rem;
 }
 
-.sheet-plate-item.actived {
+.sheet-board-item.actived {
   border: 0.2rem solid var(--color-pink);
 }
 

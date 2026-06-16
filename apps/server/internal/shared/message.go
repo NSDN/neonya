@@ -13,7 +13,7 @@ var Messages = struct {
 	AuthorizeFailedWrongPassword    string
 	AuthorizeFailedWrongToken       string
 	AuthorizeFailedUserExist        string
-	ArticleFailedBadContent         string
+	ThreadFailedBadContent          string
 }{
 	EnvironmentErrorNotFound: fmt.Sprintf(
 		"[环境变量错误] 找不到 .env 文件。",
@@ -53,5 +53,5 @@ var Messages = struct {
 	AuthorizeFailedWrongPassword: "[认证失败] 密码不一致。",
 	AuthorizeFailedWrongToken:    "[认证失败] 错误的令牌。",
 	AuthorizeFailedUserExist:     "[认证失败] 用户已存在。",
-	ArticleFailedBadContent:      "[创建帖子失败] 文章内容不正确",
+	ThreadFailedBadContent:       "[创建帖子失败] 文章内容不正确",
 }

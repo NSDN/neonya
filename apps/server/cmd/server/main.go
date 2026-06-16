@@ -6,10 +6,10 @@ import (
 	"os"
 
 	"github.com/NSDN/neonya/apps/server/internal/auth"
+	"github.com/NSDN/neonya/apps/server/internal/board"
 	"github.com/NSDN/neonya/apps/server/internal/config"
-	"github.com/NSDN/neonya/apps/server/internal/plate"
-	"github.com/NSDN/neonya/apps/server/internal/post"
 	"github.com/NSDN/neonya/apps/server/internal/shared"
+	"github.com/NSDN/neonya/apps/server/internal/thread"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/gorm"
@@ -53,8 +53,8 @@ func setupRouter(db *gorm.DB, tokenKey string, frontendDist string) *gin.Engine 
 	api := router.Group("/api")
 
 	auth.RegisterRoutes(api, db, tokenKey)
-	plate.RegisterRoutes(api, db)
-	post.RegisterRoutes(api, db)
+	board.RegisterRoutes(api, db)
+	thread.RegisterRoutes(api, db)
 
 	return router
 }

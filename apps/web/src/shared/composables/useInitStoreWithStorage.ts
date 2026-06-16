@@ -1,10 +1,10 @@
-import { useCurrentPlate } from '@/features/plate/composables/useCurrentPlate'
+import { useCurrentBoard } from '@/features/board/composables/useCurrentBoard'
 
 export function useInitStoreWithStorage() {
-  const { initCurrentPlateWithStorage } = useCurrentPlate()
+  const { initCurrentBoardWithStorage } = useCurrentBoard()
 
   const initStoreWithStorage = () => {
-    initCurrentPlateWithStorage()
+    initCurrentBoardWithStorage()
   }
 
   return { initStoreWithStorage }
