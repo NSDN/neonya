@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 
-const props = withDefaults(defineProps<{
-  threshold?: number
-}>(), {
-  threshold: 500
-})
+const props = withDefaults(
+  defineProps<{
+    threshold?: number
+  }>(),
+  {
+    threshold: 500
+  }
+)
 
 const display = ref<boolean>(false)
 
@@ -38,8 +41,7 @@ onUnmounted(() => {
 .scroll-to-top {
   background: var(--color-normal-box-background);
   border: 1px solid var(--color-pink);
-  border-radius: 50%;
-  bottom: 2rem;
+  border-radius: 0.5rem;
   box-shadow: var(--shadow-normal-box-shadow);
   color: var(--color-pink);
   cursor: pointer;
@@ -47,8 +49,6 @@ onUnmounted(() => {
   height: 3rem;
   line-height: 1;
   padding: 0;
-  position: fixed;
-  right: 2rem;
   width: 3rem;
 }
 

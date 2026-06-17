@@ -4,14 +4,12 @@ import { onMounted, ref } from 'vue'
 
 import Sidebar from './Sidebar.vue'
 import SidebarController from './SidebarController.vue'
-import BottomSheet from './BottomSheet.vue'
+import FloatingActionGroup from '../components/FloatingActionGroup/FloatingActionGroup.vue'
 import Header from '../components/Header.vue'
-import ScrollToTopButton from '../components/ScrollToTopButton.vue'
 import { useNaiveUIGlobalConfig } from '@/shared/composables'
 
 const displaySidebar = ref<boolean>(true)
 const controlSidebar = () => (displaySidebar.value = !displaySidebar.value)
-const showBoardSheet = ref<boolean>(false)
 
 const { initMessager } = useNaiveUIGlobalConfig()
 onMounted(() => initMessager())
@@ -31,15 +29,11 @@ onMounted(() => initMessager())
 
       <div class="content">
         <SidebarController class="desktop-only" @click="controlSidebar" />
-        <ScrollToTopButton />
         <slot />
       </div>
     </div>
 
-    <button class="board-trigger mobile-only" @click="showBoardSheet = true">
-      版块
-    </button>
-    <BottomSheet v-model:show="showBoardSheet" />
+    <FloatingActionGroup />
   </div>
 </template>
 
@@ -78,21 +72,6 @@ onMounted(() => initMessager())
   overflow: hidden;
   padding: var(--common-content-padding);
   position: relative;
-}
-
-.board-trigger {
-  background: var(--color-header-background);
-  border: none;
-  border-radius: 0.5rem;
-  bottom: 2rem;
-  box-shadow: var(--shadow-normal-box-shadow);
-  color: var(--color-white);
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 0.8rem 1.5rem;
-  position: fixed;
-  right: 2rem;
-  z-index: 100;
 }
 
 .desktop-only {

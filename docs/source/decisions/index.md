@@ -12,3 +12,4 @@
 | 2026-06-17 | [HTTP 层换用原生 fetch](./http-native-fetch.md)                   | ofetch → 原生 fetch，零第三方 HTTP 依赖。   |
 | 2026-06-17 | [API 路径命名约定](./api-url-naming.md)                           | 相对路径 + `new URL()`，统一路径写法。       |
 | 2026-06-17 | [Guard 条件提取模式](./guard-condition-extraction.md)             | `shouldSkipFetch()` + `conditions.some()`。 |
+| 2026-06-18 | [浮动按钮组设计](./floating-action-group.md)                      | 三按钮子组件 + 容器，BottomSheet 合并简化。  |
