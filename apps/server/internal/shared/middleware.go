@@ -65,6 +65,12 @@ func ValidateAuth(tokenKey string) gin.HandlerFunc {
 
 		token, err := parseToken(tokenString, tokenKey)
 
+		if err != nil {
+			log.Println(err)
+			HandleWrongTokenError(context)
+			return
+		}
+
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 			context.Set(config.CONTEXT_KEY_CLAIMS, claims)
 			context.Next()

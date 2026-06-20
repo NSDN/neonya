@@ -13,3 +13,4 @@
 | 2026-06-17 | [API 路径命名约定](./api-url-naming.md)                           | 相对路径 + `new URL()`，统一路径写法。       |
 | 2026-06-17 | [Guard 条件提取模式](./guard-condition-extraction.md)             | `shouldSkipFetch()` + `conditions.some()`。 |
 | 2026-06-18 | [浮动按钮组设计](./floating-action-group.md)                      | 三按钮子组件 + 容器，BottomSheet 合并简化。  |
+| 2026-06-20 | [Store 与 Composable 职责边界](./store-composable-separation.md)  | Store 全局状态+业务逻辑，Composable 局部状态+胶水。 |

@@ -15,7 +15,8 @@ INSERT INTO users (
   password,
   salt,
   nickname,
-  user_group
+  user_group,
+  icon
 )
 -- reimu:password
 VALUES (
@@ -23,7 +24,8 @@ VALUES (
   'JDJhJDEwJEZSek9BTnE5Q1dYaENuaFZDbjliSk9Vblh1dGNsSkVkNm5GTWZCZlQzMUlWWk5oM0UvTW55',
   'z6oaLurTZY8y3Jo8jS4zEQ==',
   '霊夢',
-  '結界管理者'
+  '結界管理者',
+  'https://avatars.githubusercontent.com/u/57035251'
 )
 RETURNING uid;
 

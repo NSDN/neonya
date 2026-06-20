@@ -6,7 +6,7 @@ const {
   handleClickSimpleInfo,
   handleLongTimePushSimpleInfo,
   handleReleaseKey,
-  username,
+  nickname,
   userIcon
 } = useUserSimpleInfo()
 </script>
@@ -19,7 +19,7 @@ const {
       @pointerdown="handleLongTimePushSimpleInfo"
       @pointerup="handleReleaseKey"
     >
-      {{ username }}
+      {{ nickname }}
     </button>
 
     <button

@@ -4,7 +4,6 @@ import { storage } from '@/shared/services/storage'
 import { STORAGE_KEYS, STORE_ID } from '@/shared/constants'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { login } from '../services'
 import { Option } from '@/shared/utils/rust'
 
 /** @description JWT 状态库 */
@@ -14,7 +13,7 @@ const useJWTStore = defineStore(STORE_ID.JWT, () => {
     storage.get<AuthorizationServices.Token>(STORAGE_KEYS.TOKEN).match({
       ok: value => value,
       err: error => {
-        console.log(error)
+        error.notify()
         return Option.none()
       }
     })
@@ -27,30 +26,14 @@ const useJWTStore = defineStore(STORE_ID.JWT, () => {
   const setJWT = (token: Option<AuthorizationServices.Token>) => {
     jwt.value = token
 
-    // 在浏览器的 storage 中保存 token
-    if (token) {
-      storage.set(STORAGE_KEYS.TOKEN, token)
-    } else {
-      storage.remove(STORAGE_KEYS.TOKEN)
-    }
+    // 在浏览器的 storage 中保存 token。
+    token.match({
+      some: value => storage.set(STORAGE_KEYS.TOKEN, value),
+      none: () => storage.remove(STORAGE_KEYS.TOKEN)
+    })
   }
 
-  /**
-   * @description 请求令牌
-   * @param info 登入信息
-   */
-  const queryToken = async (
-    info: AuthorizationServices.LoginInfo
-  ): Promise<AuthorizationServices.Token | undefined> => {
-    const tokenInfo = await login(info)
-
-    if (tokenInfo) {
-      setJWT(tokenInfo)
-      return tokenInfo
-    }
-  }
-
-  return { jwt, setJWT, queryToken }
+  return { jwt, setJWT }
 })
 
 export default useJWTStore

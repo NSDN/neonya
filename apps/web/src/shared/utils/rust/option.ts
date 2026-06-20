@@ -1,6 +1,7 @@
 import { BaseError } from '@/shared/errors'
 import { isNil } from '../useful/isNil'
 import { ErrorLevel } from '@/shared/constants'
+import { Result } from './result'
 
 export class Option<Value> {
   private constructor(
@@ -9,7 +10,7 @@ export class Option<Value> {
      * 为了避免在 JSON 化过程中丢失类信息而导致识别不出是什么对象，
      * 所以采用辨识度更高的命名。
      */
-    private readonly _optionValue?: Value,
+    private readonly _optionValue?: Value
   ) {}
 
   static some<Value>(value: Value): Option<Value> {
@@ -29,7 +30,7 @@ export class Option<Value> {
   }
 
   map<Transformed>(
-    callback: (value: Value) => Transformed,
+    callback: (value: Value) => Transformed
   ): Option<Transformed> {
     if (this.isNone()) {
       return Option.none()
@@ -39,7 +40,7 @@ export class Option<Value> {
   }
 
   andThen<Transformed>(
-    callback: (value: Value) => Option<Transformed>,
+    callback: (value: Value) => Option<Transformed>
   ): Option<Transformed> {
     if (this.isNone()) {
       return Option.none()
@@ -52,7 +53,7 @@ export class Option<Value> {
     if (this.isNone()) {
       throw new BaseError({
         level: ErrorLevel.Error,
-        message: 'None は取り出せません。',
+        message: 'None は取り出せません。'
       })
     }
 
@@ -72,6 +73,14 @@ export class Option<Value> {
     }
 
     return handlers.some(this._optionValue!)
+  }
+
+  okOrElse<Err extends BaseError>(error: () => Err): Result<Value, Err> {
+    if (this.isNone()) {
+      return Result.err(error())
+    }
+
+    return Result.ok(this._optionValue!)
   }
 }
 

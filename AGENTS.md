@@ -86,6 +86,7 @@ func Register(db *gorm.DB, info *RegisterInfo) (*UserPublicInfo, error) { ... }
 | TS quotes              | single                                                                                             |
 | TS trailing commas     | none                                                                                               |
 | Comments               | only add when logic is non-obvious; no AI-generated comments                                       |
+| Comment preservation   | never delete existing descriptive comments unless the associated code itself is modified           |
 | Go formatting          | `gofmt` standard                                                                                   |
 | Prettier               | `.prettierrc` at root, `arrowParens: "avoid"`                                                      |
 | Naming                 | use full words, no abbreviations (`address` not `addr`, `sourceName` not `dsn`)                    |

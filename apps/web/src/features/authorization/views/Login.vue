@@ -8,7 +8,7 @@ import { ROUTE_NAMES } from '@/shared/constants'
 import type { AuthorizationServices } from '../types'
 
 const router = useRouter()
-const { loginInfo, formError, login } = useLogin()
+const { loginInfo, formError, executeLogin } = useLogin()
 
 const formList: Record<'title' | 'type' | 'key', string>[] = [
   { title: '用户名', type: 'text', key: 'username' },
@@ -21,7 +21,7 @@ function moveToRegister() {
 
 const handleEnter = (inputType: string) => {
   if (inputType === 'password') {
-    login()
+    executeLogin()
   }
 }
 </script>
@@ -42,7 +42,7 @@ const handleEnter = (inputType: string) => {
       />
 
       <div class="button-group">
-        <button class="button" @click="login">登入</button>
+        <button class="button" @click="executeLogin">登入</button>
         <button class="button" @click="moveToRegister">注册</button>
       </div>
     </BaseCard>

@@ -8,16 +8,16 @@ export function useUserSimpleInfo() {
   const router = useRouter()
   const userStore = useUserStore()
 
-  const username = computed<string>(() => userStore.username)
+  const nickname = computed<string>(() => userStore.nickname)
   const userIcon = computed<string>(() => userStore.userIcon)
 
   /** 点击简易个人信息面板 */
   const handleClickSimpleInfo = async () => {
-    if (username.value === '游客') {
-      await router.push({ name: ROUTE_NAMES.LOGIN })
-    } else {
+    if (userStore.loggedIn) {
       // TODO: 登入后改为跳转到个人信息页（等待个人信息页的实装）
       console.warn('TODO: 登入后改为跳转到个人信息页（等待个人信息页的实装）')
+    } else {
+      await router.push({ name: ROUTE_NAMES.LOGIN })
     }
   }
 
@@ -27,16 +27,16 @@ export function useUserSimpleInfo() {
   /** 长按简易个人信息面板以登出 */
   const handleLongTimePushSimpleInfo = () => {
     // 未登入时不使长按生效
-    // if (!userStore.loggedIn) {
-    //   return
-    // }
+    if (!userStore.loggedIn) {
+      return
+    }
 
     // 清除可能存在的计时器
     clearTimer()
 
     // 计时超过 n 秒则登出，不到时间放开则会清除计时器
     timer = setTimeout((): void => {
-      // userStore.logout()
+      userStore.logout()
       clearTimer()
     }, 1 * ONE_SECOND)
   }
@@ -47,7 +47,7 @@ export function useUserSimpleInfo() {
   }
 
   return {
-    username,
+    nickname,
     userIcon,
     handleClickSimpleInfo,
     handleLongTimePushSimpleInfo,

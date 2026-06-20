@@ -5,7 +5,7 @@ export class Result<Value, Err extends BaseError> {
   private constructor(
     private readonly _ok: boolean,
     private readonly _value?: Value,
-    private readonly _error?: Err,
+    private readonly _error?: Err
   ) {}
 
   static ok<Value, Err extends BaseError>(value: Value): Result<Value, Err> {
@@ -20,7 +20,7 @@ export class Result<Value, Err extends BaseError> {
     if (!this._ok) {
       throw new BaseError({
         level: ErrorLevel.Error,
-        message: '[Result]: 无法中错误中获取值。',
+        message: '[Result]: 无法从错误中获取值。'
       })
     }
 
@@ -31,7 +31,7 @@ export class Result<Value, Err extends BaseError> {
     if (this._ok) {
       throw new BaseError({
         level: ErrorLevel.Error,
-        message: '[Result]: 无法从值中获取错误。',
+        message: '[Result]: 无法从值中获取错误。'
       })
     }
 
@@ -47,7 +47,7 @@ export class Result<Value, Err extends BaseError> {
   }
 
   map<Transformed>(
-    callback: (vaule: Value) => Transformed,
+    callback: (vaule: Value) => Transformed
   ): Result<Transformed, Err> {
     if (!this._ok) {
       return Result.err(this._error!)
@@ -57,7 +57,7 @@ export class Result<Value, Err extends BaseError> {
   }
 
   andThen<Transformed>(
-    callback: (value: Value) => Result<Transformed, Err>,
+    callback: (value: Value) => Result<Transformed, Err>
   ): Result<Transformed, Err> {
     if (!this._ok) {
       return Result.err(this._error!)
