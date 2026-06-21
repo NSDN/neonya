@@ -40,9 +40,10 @@ function handleSelectBoard(id: BoardId) {
               :key="index.toString()"
               class="sheet-board-item"
               :class="{ actived: isCurrentBoard(item.id) }"
+              :style="{ backgroundImage: `url(${item.background})` }"
               @click="() => handleSelectBoard(item.id)"
             >
-              {{ item.name }}
+              <span class="sheet-board-title">{{ item.name }}</span>
             </button>
           </div>
         </Transition>
@@ -90,28 +91,36 @@ function handleSelectBoard(id: BoardId) {
 }
 
 .bottom-sheet-panel {
-  background: var(--color-sidebar-background);
+  background: color-mix(
+    in srgb,
+    var(--color-sidebar-background) 70%,
+    transparent
+  );
   border-radius: 1rem 1rem 0 0;
   box-sizing: border-box;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
+  display: grid;
+  gap: 1.1rem;
+  grid-template-columns: repeat(2, minmax(10rem, 1fr));
   max-height: 70vh;
   overflow: auto;
-  padding: 1rem;
+  padding: 1.2rem;
   width: 100%;
 }
 
 .sheet-board-item {
-  background: var(--color-normal-box-background);
+  background-color: var(--color-normal-box-background);
+  background-size: cover;
   border: none;
   border-radius: 0.5rem;
   box-sizing: border-box;
-  color: inherit;
-  flex: 1 1 calc(50% - 0.4rem);
   font-size: 1rem;
-  min-width: calc(50% - 0.4rem);
+  min-height: var(--common-board-item-height);
   padding: 1rem 0.5rem;
+}
+
+.sheet-board-title {
+  color: var(--color-white);
+  text-shadow: var(--common-board-item-text-shadow);
 }
 
 .sheet-board-item.actived {

@@ -27,6 +27,8 @@ const title = computed<string>(() => {
 <style scoped>
 .board-on-sidebar {
   align-items: center;
+  /* 此为图片加载失败时的降级底色。 */
+  background-color: var(--color-normal-box-background);
   background: v-bind(background);
   background-size: cover;
   border: none;
@@ -34,7 +36,7 @@ const title = computed<string>(() => {
   box-shadow: var(--common-block-box-shadow);
   box-sizing: border-box;
   display: flex;
-  height: 4.5rem;
+  height: var(--common-board-item-height);
   justify-content: center;
   outline: none;
   padding: 0;
@@ -53,7 +55,7 @@ const title = computed<string>(() => {
   font-size: 1.1rem;
   height: 100%;
   justify-content: center;
-  text-shadow: 1px 1px 8px #000;
+  text-shadow: var(--common-board-item-text-shadow);
   width: 100%;
 }
 </style>
