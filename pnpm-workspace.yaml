@@ -1,0 +1,11 @@
+packages:
+  - web
+  - docs
+
+# pnpm 默认不执行依赖的安装脚本（供应链安全）。
+# esbuild（vite / vitepress 依赖）需要跑 postinstall 放置平台二进制，显式放行。
+allowBuilds:
+  esbuild: set this to true or false
+
+onlyBuiltDependencies:
+  - esbuild

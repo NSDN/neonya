@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+.next/
+out/
+*.tsbuildinfo
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+
+# Environment files
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Go
+*.exe
+*.test
+api/bin/
+vendor/
+
+# Local scratch
+tmp/
+.draft-output/
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

@@ -1,0 +1,19 @@
+{
+  "name": "neonya",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@12.16.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev:docs": "pnpm --filter @neonya/docs docs:dev",
+    "build:docs": "pnpm --filter @neonya/docs docs:build",
+    "preview:docs": "pnpm --filter @neonya/docs docs:preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  }
+}
