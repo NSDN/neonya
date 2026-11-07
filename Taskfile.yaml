@@ -1,0 +1,125 @@
+version: '3'
+
+# `.env` 可选：缺省时下面的 `${VAR:-默认值}` 会兜底到本地开发默认值。
+dotenv: ['.env']
+
+vars:
+  DEFAULT_DATABASE_URL: 'postgres://neonya:neonya@localhost:5432/neonya?sslmode=disable'
+  # 容器跑在 WSL 发行版内的 Docker Engine 里，客户端也在同一发行版内，
+  # 这样 compose 的相对路径按 Linux 语义解析，不需要 Windows ↔ Linux 路径翻译。
+  WSL_DISTRIBUTION: 'Ubuntu'
+  DOCKER: 'wsl -d {{.WSL_DISTRIBUTION}} -- docker'
+  COMPOSE: 'wsl -d {{.WSL_DISTRIBUTION}} -- docker compose'
+
+tasks:
+  # ---------- 基础设施（只跑 Postgres / Redis，应用进程在宿主机） ----------
+
+  infra:up:
+    desc: 起 postgres / redis 容器（数据保留，等健康检查通过）
+    cmds:
+      - '{{.COMPOSE}} up -d --wait'
+      # 测试库与开发库同实例，名字固定为 neonya_test；已存在时报错即忽略。
+      - cmd: "{{.DOCKER}} exec neonya-pg psql -U neonya -d neonya -c 'CREATE DATABASE neonya_test'"
+        ignore_error: true
+
+  infra:psql:
+    desc: 进 psql（不必在宿主机装 psql）
+    interactive: true
+    cmds:
+      - '{{.DOCKER}} exec -it neonya-pg psql -U neonya -d neonya'
+
+  infra:down:
+    desc: 停容器（数据保留；发行版空闲约 15 秒后自行退出，dockerd 随之停止）
+    cmds:
+      - '{{.COMPOSE}} stop'
+
+  infra:reset:
+    desc: 删本项目的容器与命名卷（含 Postgres 数据），不可恢复
+    prompt: 这会删除本项目的本地数据库数据，继续？
+    cmds:
+      - '{{.COMPOSE}} down -v'
+
+  # ---------- 数据库迁移（goose，纯 SQL） ----------
+
+  db:migrate:
+    desc: goose up 到最新版本
+    dir: api
+    cmds:
+      - goose -dir migrations postgres "${DATABASE_URL:-{{.DEFAULT_DATABASE_URL}}}" up
+
+  db:rollback:
+    desc: goose down 回滚一步
+    dir: api
+    cmds:
+      - goose -dir migrations postgres "${DATABASE_URL:-{{.DEFAULT_DATABASE_URL}}}" down
+
+  db:status:
+    desc: goose 迁移状态
+    dir: api
+    cmds:
+      - goose -dir migrations postgres "${DATABASE_URL:-{{.DEFAULT_DATABASE_URL}}}" status
+
+  db:seed:
+    desc: 幂等种子数据（M1 随版块/账号表一起实装，现在为空操作）
+    cmds:
+      - echo 'seed 尚未实装：等 M1 有了 boards / users 表再补'
+
+  # ---------- 代码生成 ----------
+
+  gen:
+    desc: 从 Huma 重新导出 api/openapi.yaml（sqlc 待 M1 有 queries 后接入）
+    dir: api
+    cmds:
+      - go run ./cmd/api spec -output openapi.yaml
+
+  # ---------- 应用进程 ----------
+
+  api:dev:
+    desc: 前台启动 API（slog JSON 日志到 stdout）
+    dir: api
+    cmds:
+      # Go 侧把 DATABASE_URL 当必填项，默认值只在这里给一份，免得两处不一致。
+      - DATABASE_URL="${DATABASE_URL:-{{.DEFAULT_DATABASE_URL}}}" go run ./cmd/api serve
+
+  # task web:dev 待 web/ 出现后补上。
+
+  # ---------- 质量门 ----------
+
+  format:api:
+    desc: gofmt 格式化 Go 代码
+    dir: api
+    cmds:
+      - gofmt -l -w .
+
+  check:format:
+    desc: 检查 Go 代码格式
+    dir: api
+    cmds:
+      - cmd: test -z "$(gofmt -l .)"
+        msg: gofmt 发现未格式化文件，请先跑 task format:api
+
+  check:vet:
+    desc: go vet
+    dir: api
+    cmds:
+      - go vet ./...
+
+  check:test:
+    desc: 单元测试
+    dir: api
+    cmds:
+      - go test ./...
+
+  check:spec:
+    desc: 校验 api/openapi.yaml 是否为最新契约（只读）
+    dir: api
+    cmds:
+      - go run ./cmd/api spec -check -output openapi.yaml
+
+  check:
+    desc: 格式 + vet + 单元测试 + 契约漂移（web 部分待 web/ 出现后接入）
+    cmds:
+      - task: check:format
+      - task: check:vet
+      - task: check:test
+      - task: check:spec

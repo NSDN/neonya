@@ -1,0 +1,49 @@
+# 本地开发只跑基础设施：Postgres 与 Redis。
+# 应用进程跑在宿主机（go run / next dev），这里没有 api / web 服务。
+#
+# 入口是 task infra:up（内部为 wsl -d Ubuntu -- docker compose up -d --wait）。
+# 数据在命名卷里：stop / down 不会删，只有 down -v（task infra:reset）会删。
+
+name: neonya
+
+services:
+  postgres:
+    image: docker.io/library/postgres:16-alpine
+    container_name: neonya-pg
+    # 不设 restart：dockerd 会被 socket 激活随时拉起，always 会让容器跟着复活。
+    restart: 'no'
+    environment:
+      POSTGRES_USER: neonya
+      POSTGRES_PASSWORD: neonya
+      POSTGRES_DB: neonya
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U neonya -d neonya']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: docker.io/library/redis:7-alpine
+    container_name: neonya-redis
+    restart: 'no'
+    command: redis-server --appendonly yes
+    ports:
+      - '6379:6379'
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli ping | grep -q PONG']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  # 键短、实际名带项目前缀：目录名 / -p / COMPOSE_PROJECT_NAME 变化都不会产生新卷。
+  pgdata:
+    name: neonya-pgdata
+  redisdata:
+    name: neonya-redisdata

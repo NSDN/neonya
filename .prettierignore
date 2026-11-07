@@ -1,0 +1,15 @@
+# prettier 推断不出 dotenv 的 parser，格式由人工保持
+.env.example
+
+# 归档讨论稿：冻结，不再维护格式
+docs/source/archive/
+
+# 生成物：由 pnpm 自己维护
+pnpm-lock.yaml
+
+# 生成物：由 task gen 产出，prettier 会把 "200" 改写成 '200'，让 spec -check 误报漂移
+api/openapi.yaml
+
+# VitePress 构建产物
+docs/.vitepress/cache/
+docs/.vitepress/dist/
