@@ -1,0 +1,52 @@
+components:
+  schemas:
+    HealthResponse:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          examples:
+            - /api/v1/schemas/HealthResponse.json
+          format: uri
+          readOnly: true
+          type: string
+        database:
+          description: up / down
+          type: string
+        serverTime:
+          format: date-time
+          type: string
+        state:
+          description: ok 表示服务与数据库都可用
+          type: string
+        version:
+          type: string
+      required:
+        - state
+        - database
+        - version
+        - serverTime
+      type: object
+info:
+  title: neonya API
+  version: 1.0.0
+openapi: 3.1.0
+paths:
+  /health:
+    get:
+      description: 数据库不可达时返回 503 与 degraded 状态。
+      operationId: getHealth
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+          description: OK
+        "503":
+          description: 数据库不可达，响应体状态为 degraded
+      summary: 服务健康检查
+      tags:
+        - system
+servers:
+  - url: /api/v1
