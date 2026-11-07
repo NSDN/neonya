@@ -29,7 +29,7 @@
 
 ```sh
 task --list          # 全部任务（每条都有 desc）
-task infra:up        # podman machine start + postgres/redis
+task infra:up        # docker compose up -d --wait（WSL 内）+ postgres/redis
 task db:migrate      # goose up
 task gen             # sqlc + api/openapi.yaml + web/src/lib/api/schema.d.ts
 task api:dev         # go run ./cmd/api serve（JSON 日志，可接 | jq）
@@ -41,9 +41,11 @@ pnpm dev:docs        # VitePress（端口 10126）
 
 ## 硬约束
 
-- **安装任何依赖或工具前必须先问**（`pnpm add` / `go get` / `go install` / `scoop` / `winget`）。
-- 容器只用 **Podman**，不用 Docker Desktop、不用 `docker compose`。
-- 数据库只在 Podman 里跑；应用进程跑在宿主机（`go run` / `next dev`）。
+- **安装依赖或工具：只能提案，不能代跑**。助手可以给出具体命令与理由（`pnpm add` / `go get` / `go install` / `scoop` / `winget` / 下载安装包），但**一律由用户亲自执行**；装完由助手核对版本。
+- **git 写操作必须由用户发起或批准**：`commit` / `reset` / `revert` / `rebase` / `checkout` / `switch` / `stash` / `push` 等改变历史或工作区的操作，一律等用户明确指示再执行；助手只提案命令与理由。只读查询（`status` / `diff` / `log` / `show`）不受限。
+- 容器只用 **Docker Engine**（跑在 WSL 发行版内），不用 Docker Desktop，不在 Windows 侧装 `docker.exe`。
+- 数据库只在 WSL 内的 Docker 里跑；应用进程跑在宿主机（`go run` / `next dev`）。
+- `docker.service` / `containerd.service` 保持 `disabled`，只留 `docker.socket` 做按需拉起；容器一律 `restart: 'no'`。
 - 测试连独立测试库（`TEST_DATABASE_URL` → `neonya_test`），**不用 testcontainers**。
 - 不引入 hurl、Postman 集合；冒烟测试是 Go 代码。
 - 提交信息用英文 + Conventional Commits（`type(scope): subject`，subject ≤ 72 字符，祈使句，结尾不加句号）。
@@ -76,15 +78,26 @@ pnpm dev:docs        # VitePress（端口 10126）
 - **日志**：`slog` → JSON 到 stdout，禁止彩色美化输出。
 - **XSS**：渲染只在服务端（goldmark 禁 raw HTML → bluemonday），前端只插入渲染好的 HTML。
 
+## 交付粒度
+
+一次只交付**一个审查单元**：一个 commit = 一个能单独验收的行为。
+
+- 上限：≤ 3 个文件、≤ 150 行 diff（生成物与锁文件不计）；
+- 必附：一条验证命令（`go test ./...` / `task db:migrate` / `curl …`）、一句「可跳过的模板部分」、需要用户拍板的决策点（0~2 个）；
+- 写完就停，等审阅，不连续推进下一个单元；
+- 开新一轮前先给**切分清单**（单元 / 每单元的验证方式 / 明确不做什么），经用户批准再动手。
+
 ## 每个 session 结束前
 
+> 何时算「结束」由用户宣布；助手不自行收尾，也不把「待办清单跑完」当成收尾信号。
+
 1. `task check` 通过（或明确记录未通过的部分）；
-2. 更新 `worknote.md`（**简要**记本轮做了什么、下一步）；长期信息写进 `docs/`，别往便签里堆；
-3. 提交 git（一条 commit 说明这一轮做了什么）。
+2. 汇报本轮改动，等用户审阅并决定是否提交（提交信息格式见硬约束）；
+3. **不改 `worknote.md`**：它是人维护的便签，助手只读，不代写（见「文档维护」）。
 
 ## 新 session 开场流程
 
-1. 读 `worknote.md` —— 看最新一节写了什么、下一步是什么，按「下一步」开干；
+1. 读 `worknote.md` —— 看最新一节写了什么、下一步是什么，按「下一步」开干；**读归读，不代写**，且假定它滞后于磁盘；
 2. 有歧义先查 `docs/source/decisions/`，已有结论就不要再发明一遍；
 3. 动手前看 `git status`：有未提交改动先问清来源，别接着别人的半成品往上写；
 4. 结束时按上面「每个 session 结束前」三条收尾。
@@ -103,6 +116,7 @@ pnpm dev:docs        # VitePress（端口 10126）
 ## 文档维护
 
 - 本文件是**索引**，不是手册：内容一旦在 `docs/` 有权威版本，这里只留一句指针。**超过 150 行就拆。**
+- **`worknote.md` 由人维护**：助手只读，用来辅助判断「做到哪、下一步是什么」，**不代写、不代改**。它一定滞后于磁盘（人想起来才更新），所以状态冲突时以 `git log` / `git status` / 代码与 `docs/` 为准，任何「worknote 说已完成」都不能当成验证结论。
 - 判据：任何「未来的我还会再问一次」的问题，答案必须落盘；**只在对话里说过 = 不存在**。
 - 同一事实只有一个权威位置：
 
@@ -111,9 +125,9 @@ pnpm dev:docs        # VitePress（端口 10126）
   | 为什么这么选 / 否决了什么    | `docs/source/decisions/`                  |
   | 结构 / 字段 / 索引 / 部署    | `docs/source/architecture/`               |
   | 界面元素、元素编号、中文术语 | `docs/source/design/post-entry-layout.md` |
-  | 本轮进度 / 下一步            | `worknote.md`（便签）                     |
+  | 本轮进度 / 下一步            | `worknote.md`（人维护的便签，助手只读）   |
   | 阶段路线                     | `docs/source/architecture/overview.md`    |
 
-- 状态与进度 → `worknote.md`（便签，保持简短）；阶段路线 → `architecture/overview.md`；术语 → `design/post-entry-layout.md`。这三者不另设文件。
+- 状态与进度 → `worknote.md`（人维护的便签，保持简短；助手只读）；阶段路线 → `architecture/overview.md`；术语 → `design/post-entry-layout.md`。这三者不另设文件。
 - 文档页涨到 200 行以上再考虑拆页，不要预先切格子。
 - 文档与代码改在同一处时，**同一次提交里一起改**；做不到就在对应文档里留一句「待写 / 待核」，不要只在对话里说。
