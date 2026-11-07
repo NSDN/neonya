@@ -38,7 +38,9 @@ export const useUserStore = defineStore(STORE_ID.USER, () => {
   const uid = ref('')
   const nickname = ref('游客')
 
-  const setUserInfo = (info: UserInfo) => { /* 更新 ref */ }
+  const setUserInfo = (info: UserInfo) => {
+    /* 更新 ref */
+  }
 
   const logout = () => {
     // 跨 store 协调：同时清理 jwt 和 user
@@ -72,11 +74,11 @@ export function useLogin() {
 
 新版前端没有 Pinia，本决策的对象（Store vs Composable）不存在。取而代之的是三层：
 
-| 层 | 用途 | 不做什么 |
-| --- | --- | --- |
-| Server Component + `await` | 首屏取数、SEO 内容 | 不用 `useState`，不写交互逻辑 |
-| TanStack Query | 客户端缓存、失效、乐观更新、无限滚动 | 不做全局业务状态 |
-| `useState` / `useReducer` | 组件局部的表单与 UI 状态 | 不跨组件共享 |
+| 层                         | 用途                                 | 不做什么                      |
+| -------------------------- | ------------------------------------ | ----------------------------- |
+| Server Component + `await` | 首屏取数、SEO 内容                   | 不用 `useState`，不写交互逻辑 |
+| TanStack Query             | 客户端缓存、失效、乐观更新、无限滚动 | 不做全局业务状态              |
+| `useState` / `useReducer`  | 组件局部的表单与 UI 状态             | 不跨组件共享                  |
 
 详见 [前端状态分层](./frontend-state-layers)。
 

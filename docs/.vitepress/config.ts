@@ -6,7 +6,7 @@ import {
   useSidebar,
   useHead,
   useNavigation,
-  useSocialLinks,
+  useSocialLinks
 } from './composition'
 
 /**
@@ -23,7 +23,7 @@ export default defineConfigWithTheme<DefaultTheme.Config & CustomTheme.Config>({
   lastUpdated: true,
 
   markdown: {
-    lineNumbers: true,
+    lineNumbers: true
   },
 
   themeConfig: {
@@ -31,6 +31,6 @@ export default defineConfigWithTheme<DefaultTheme.Config & CustomTheme.Config>({
     nav: useNavigation(),
     sidebar: useSidebar(),
     socialLinks: useSocialLinks(),
-    outline: { label: '目录' },
-  },
+    outline: { label: '目录' }
+  }
 })

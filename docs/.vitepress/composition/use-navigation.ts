@@ -7,6 +7,6 @@ export function useNavigation(): DefaultTheme.NavItem[] {
     { text: '设计', link: '/design/post-entry-layout' },
     { text: '决策记录', link: '/decisions/' },
     { text: '维护手册', link: '/maintenance/' },
-    { text: '文档开发说明', link: '/develop-description/' },
+    { text: '文档开发说明', link: '/develop-description/' }
   ]
 }
