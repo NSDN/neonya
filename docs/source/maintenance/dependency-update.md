@@ -1,19 +1,35 @@
 # 依赖与工具更新流程
 
 > 策略与取舍见[依赖更新的分阶段策略](/decisions/dependency-update-policy)。本文只写**怎么操作**。
-> 本文按**当前仓库现状**编写：目前只有 `docs/` 与根配置，`api/`、`web/` 尚未创建。
+> 本文按**当前仓库现状**编写：`docs/` 与根配置已就绪，`api/` 有 M0 骨架，`web/` 尚未创建。
 
 ## 1. 现在能更新什么
 
-| 部分 | 现状 | 可更新对象 | 当前版本 |
-| --- | --- | --- | --- |
-| `docs/` | 已存在 | `vitepress`、`vue` | vitepress 1.6.x、vue 3.x |
-| 根 `package.json` | 已存在 | `prettier` | 3.9.x |
-| `web/` | **未创建** | — | — |
-| `api/` | **未创建** | — | — |
-| 宿主工具链 | 已安装 | pnpm、node、podman、task | pnpm 12.15.0、node 26、podman 6.1.4 |
+| 部分              | 现状       | 可更新对象         | 当前版本                              |
+| ----------------- | ---------- | ------------------ | ------------------------------------- |
+| `docs/`           | 已存在     | `vitepress`、`vue` | vitepress 1.6.x、vue 3.x              |
+| 根 `package.json` | 已存在     | `prettier`         | 3.9.x                                 |
+| `web/`            | **未创建** | —                  | —                                     |
+| `api/`            | 骨架（M0） | chi、huma、pgx     | chi v5.5.0、huma v2.40.0、pgx v5.11.0 |
 
 `docs` 用 Vue、将来 `web` 用 React，两套框架互不影响，可以分别升级。
+
+### 1.1 工具链版本矩阵
+
+**先看这张表再动手**：凡是不进 `go.mod` / `package.json` 的工具都记在这里，换机器时按此对齐。
+
+| 工具   | 当前版本           | 更新方式                                                                                           |
+| ------ | ------------------ | -------------------------------------------------------------------------------------------------- |
+| Go     | `go1.27.0`         | 官网安装包覆盖安装；升完同步 `api/go.mod` 的 `go` 指令与[架构总览](/architecture/overview)技术栈表 |
+| goose  | `v3.29.0`          | `go install github.com/pressly/goose/v3/cmd/goose@latest`                                          |
+| sqlc   | `v1.31.1`          | `go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest`                                              |
+| Task   | `3.54.0`           | `winget upgrade --id Task.Task -e`                                                                 |
+| pnpm   | `12.16.1`          | `pnpm self-update`（同步根 `package.json` 的 `packageManager`）                                    |
+| Node   | `26.2.0`           | `fnm install <version>` + 同步 `engines.node`                                                      |
+| Docker | `29.9.3`（WSL 内） | 见 §6：WSL 内用 `apt` 升；升完 `task infra:down` → `task infra:up` 验证                            |
+| psql   | 未装               | 不装：走 `task infra:psql`（即 `docker exec -it neonya-pg psql -U neonya -d neonya`）              |
+
+`go install` 装的二进制没有版本锁定文件，所以**升完必须回填本表**，否则下次换机器装到的版本不同，`sqlc generate` 的产物会漂移。
 
 ## 2. 操作流（五步）
 
@@ -44,15 +60,15 @@ git revert <sha>
 
 ## 3. 阶段顺序（按风险递增）
 
-| 阶段 | 范围 | 判断依据 |
-| --- | --- | --- |
-| 1 | 补丁 / 次要版本 | `pnpm -r update`，无代码改动 |
-| 2 | 文档站构建链 | `vitepress` + `vue` + `vite`，三者成套升 |
-| 3 | 根工具（prettier 等） | 与构建无关，随时可升 |
-| 4 | `web` 构建链 | Next + React + TypeScript，peer 互相约束，**必须同一提交**（`web/` 出现后适用） |
-| 5 | Go 侧 | `go get -u ./...` 后跑 `task check`（`api/` 出现后适用） |
-| 6 | 宿主工具链 | pnpm / node / podman / task，见 §6 |
-| 7 | 清理 | 弃用依赖、lockfile 冗余 |
+| 阶段 | 范围                  | 判断依据                                                                        |
+| ---- | --------------------- | ------------------------------------------------------------------------------- |
+| 1    | 补丁 / 次要版本       | `pnpm -r update`，无代码改动                                                    |
+| 2    | 文档站构建链          | `vitepress` + `vue` + `vite`，三者成套升                                        |
+| 3    | 根工具（prettier 等） | 与构建无关，随时可升                                                            |
+| 4    | `web` 构建链          | Next + React + TypeScript，peer 互相约束，**必须同一提交**（`web/` 出现后适用） |
+| 5    | Go 侧                 | `go get -u ./...` 后跑 `task check`（`api/` 出现后适用）                        |
+| 6    | 宿主工具链            | pnpm / node / docker / task，见 §6                                              |
+| 7    | 清理                  | 弃用依赖、lockfile 冗余                                                         |
 
 ## 4. 每阶段的验收清单
 
@@ -74,11 +90,26 @@ git revert <sha>
 
 ## 6. 宿主工具链更新
 
+> 本节命令只写「怎么升」，**一律由用户亲自执行**；助手只提案命令，不代跑（见 `AGENTS.md` 硬约束）。
+
 ```powershell
 pnpm self-update                    # 升完跑一次 pnpm install + pnpm build:docs
-scoop update task                   # 升完跑 task --list 确认任务都在
-winget upgrade Podman               # 升完 podman machine stop/start，再 task infra:up 验证
+winget upgrade --id Task.Task -e    # 升完跑 task --list 确认任务都在
+
+# Docker 在 WSL 内升级：Windows 侧不装 docker.exe
+wsl -d Ubuntu -- sudo apt update
+wsl -d Ubuntu -- sudo apt install --only-upgrade docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+# 升完跑 task infra:down → task infra:up 验证，并核对 /etc/docker/daemon.json 仍生效
 ```
+
+Go 系工具（`go install` 重装即升级）：
+
+```powershell
+go install github.com/pressly/goose/v3/cmd/goose@latest
+go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+```
+
+两条跑完用 `goose -version` / `sqlc version` 核对，再回填 §1.1 的版本矩阵。
 
 Node 主版本升级：改 `engines.node`、根 `package.json` 的 `packageManager`、以及将来 CI 的 node 版本，三者一起提交。
 
@@ -86,9 +117,9 @@ Node 主版本升级：改 `engines.node`、根 `package.json` 的 `packageManag
 
 以下等内容出现后再补本文件：
 
-| 项 | 触发条件 |
-| --- | --- |
-| Next + React + TypeScript 升级流程 | `web/` 创建后 |
-| Go 模块升级（pgx / chi / huma / sqlc / goose） | `api/` 创建后 |
+| 项                                                                | 触发条件               |
+| ----------------------------------------------------------------- | ---------------------- |
+| Next + React + TypeScript 升级流程                                | `web/` 创建后          |
+| Go 模块升级（pgx / chi / huma / sqlc / goose）                    | `api/` 创建后          |
 | 数据库与缓存镜像钉版本（`postgres:16-alpine` / `redis:7-alpine`） | `Taskfile.yaml` 出现后 |
-| 升级后回填「版本矩阵」与「已完成更新记录」 | 首次完整升级后 |
+| 升级后回填「版本矩阵」与「已完成更新记录」                        | 首次完整升级后         |
