@@ -41,9 +41,9 @@
 
 两处更新：
 
-| 项 | 旧 | 新 |
-| --- | --- | --- |
-| 代码路径 | `apps/server/internal/board/*`、`apps/web/src/features/board/*` | `api/internal/domain/board/`、`web/src/features/board/` |
-| 版块 ID | `BoardId = string`（原为 union） | 类型仍为 `string`，值统一为 **UUID v7**；URL 用 `/f/{boardSlug}`，slug 与 id 分离 |
+| 项       | 旧                                                              | 新                                                                                |
+| -------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| 代码路径 | `apps/server/internal/board/*`、`apps/web/src/features/board/*` | `api/internal/domain/board/`、`web/src/features/board/`                           |
+| 版块 ID  | `BoardId = string`（原为 union）                                | 类型仍为 `string`，值统一为 **UUID v7**；URL 用 `/f/{boardSlug}`，slug 与 id 分离 |
 
 「默认选中取列表第一项」的兜底规则保留（`boards[0] ?? 'general'` 这类 fallback 仍在服务端或客户端入口处理）。

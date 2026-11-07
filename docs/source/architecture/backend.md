@@ -24,13 +24,13 @@ platform (pgx / redis / storage / mail / search / jobs)
 
 ## 2. 各层能做与不能做
 
-| 层 | 可以做 | 不能做 | 依赖 |
-| --- | --- | --- | --- |
-| `transport/http` | HTTP 编解码、Huma 校验、从 cookie 解析身份、错误映射、entity→DTO | 判断权限、开事务、拼 SQL | service、domain（只读类型） |
-| `service` | 编排多个 repo、判权限、开事务、调度其他模块、入队、写审计 | 碰 `pgx` / `sqlc` 类型、解析 HTTP | domain 的接口 |
-| `domain/*` | entity、业务不变式、sentinel error、Repository 接口 | import 任何框架 / 驱动 / HTTP 包 | 仅标准库 |
-| `persistence` | 调 sqlc 查询、行→entity、唯一冲突翻译 | 业务判断 | domain、platform |
-| `platform` | 连接池、Redis、存储、邮件、River 客户端 | 任何业务逻辑 | 第三方库 |
+| 层               | 可以做                                                           | 不能做                            | 依赖                        |
+| ---------------- | ---------------------------------------------------------------- | --------------------------------- | --------------------------- |
+| `transport/http` | HTTP 编解码、Huma 校验、从 cookie 解析身份、错误映射、entity→DTO | 判断权限、开事务、拼 SQL          | service、domain（只读类型） |
+| `service`        | 编排多个 repo、判权限、开事务、调度其他模块、入队、写审计        | 碰 `pgx` / `sqlc` 类型、解析 HTTP | domain 的接口               |
+| `domain/*`       | entity、业务不变式、sentinel error、Repository 接口              | import 任何框架 / 驱动 / HTTP 包  | 仅标准库                    |
+| `persistence`    | 调 sqlc 查询、行→entity、唯一冲突翻译                            | 业务判断                          | domain、platform            |
+| `platform`       | 连接池、Redis、存储、邮件、River 客户端                          | 任何业务逻辑                      | 第三方库                    |
 
 ## 3. 强制规则
 
@@ -63,6 +63,7 @@ platform (pgx / redis / storage / mail / search / jobs)
    ```
 
    `persistence` 每个方法开头 `sqlc.New(p.conn(ctx))` 即可，上层不感知事务。
+
 4. **错误分层**：domain 只返回 sentinel（`ErrNoPermission` / `ErrTopicLocked` / `ErrTitleTooShort`），`transport/http` 统一映射成 `problem+json`。
 5. **跨模块只走 service**：`domain/a` 不 import `domain/b` 的实现细节。
 6. **装配集中**：`cmd/api/main.go` 手写全部依赖，不用 DI 容器。
@@ -193,13 +194,13 @@ content_md ──goldmark（禁 raw HTML 直通，只放行语义标签白名单
 
 ## 9. 测试
 
-| 层 | 方式 | 依赖 |
-| --- | --- | --- |
-| domain | 表驱动单测 | 无 |
-| service | 注入 fake Repository / fake Transactor | 无 |
-| persistence | 连 `neonya_test` 库执行真 SQL | Postgres |
-| transport | `httptest` + fake service | 无 |
-| 冒烟 | `api/smoke/smoke_test.go`（`//go:build smoke`） | `SMOKE_BASE_URL` |
+| 层          | 方式                                            | 依赖             |
+| ----------- | ----------------------------------------------- | ---------------- |
+| domain      | 表驱动单测                                      | 无               |
+| service     | 注入 fake Repository / fake Transactor          | 无               |
+| persistence | 连 `neonya_test` 库执行真 SQL                   | Postgres         |
+| transport   | `httptest` + fake service                       | 无               |
+| 冒烟        | `api/smoke/smoke_test.go`（`//go:build smoke`） | `SMOKE_BASE_URL` |
 
 不使用 testcontainers：测试只需一个 `TEST_DATABASE_URL`，跑前 `goose up`，结束 truncate。
 

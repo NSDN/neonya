@@ -99,11 +99,11 @@ layouts/DefaultLayout/
 
 实现层换到 React：
 
-| 旧 | 新 |
-| --- | --- |
-| `props.show` + `emit('update:show')` | `open` / `onOpenChange` 受控 props |
-| `<Transition>` | CSS `transition`（必要时才引入动画库） |
-| `window.$message` 占位 | 待定（Toast 方案随 shadcn/ui） |
+| 旧                                   | 新                                     |
+| ------------------------------------ | -------------------------------------- |
+| `props.show` + `emit('update:show')` | `open` / `onOpenChange` 受控 props     |
+| `<Transition>`                       | CSS `transition`（必要时才引入动画库） |
+| `window.$message` 占位               | 待定（Toast 方案随 shadcn/ui）         |
 
 ### 与条目布局文档的对齐
 

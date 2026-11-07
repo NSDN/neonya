@@ -40,10 +40,10 @@
 
 新版改用 **`openapi-fetch`**：它本身也是原生 `fetch` 的薄封装，但请求/响应类型由 Huma 导出的 OpenAPI 生成，见[契约生成](/architecture/backend)。
 
-| 原决策 | 现在 |
-| --- | --- |
+| 原决策                            | 现在                                                                        |
+| --------------------------------- | --------------------------------------------------------------------------- |
 | 手写 `shared/services/request.ts` | `web/src/lib/api/client.ts` 包一层生成的 client（浏览器与服务端各一个实例） |
-| 手写 URL 拼接 + `new URL()` | client 的 `baseUrl` + 生成的路径常量，见 [API 版本与路径](./api-versioning) |
-| 不引入 ofetch / axios | **结论不变**：仍然不引入任何第三方 HTTP 客户端库 |
+| 手写 URL 拼接 + `new URL()`       | client 的 `baseUrl` + 生成的路径常量，见 [API 版本与路径](./api-versioning) |
+| 不引入 ofetch / axios             | **结论不变**：仍然不引入任何第三方 HTTP 客户端库                            |
 
 保留的是「零重量级 HTTP 依赖」这个结论，失效的只是「手写 request 层」这个实现方式。

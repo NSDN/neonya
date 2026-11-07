@@ -75,7 +75,7 @@ TypeScript 7 是编译器原生重写版本，`vue-tsc` 3 的 peer 只声明 `>=
 2. **构建链成套升级**：Next + React + TypeScript——三者 peer 互相约束，必须同一提交；
 3. **文档站构建链**：VitePress + Vite + Vue，与 `web` 独立，可单独升；
 4. **Go 侧**：`go get -u ./...` 后跑 `task check`；`pgx` / `chi` / `huma` 优先，`sqlc` / `goose` 解耦；
-5. **工具链与镜像**：`podman machine`、基础镜像、`sqlc` / `goose` 版本；
+5. **工具链与镜像**：WSL 内的 Docker Engine 与 compose 插件、基础镜像、`sqlc` / `goose` 版本；
 6. **清理**：彻底不用的依赖与 lockfile 冗余。
 
 两处失效：

@@ -38,10 +38,10 @@
 
 新版前端改为 **Next.js App Router（SSR）**，本决策的三项内容全部失效：
 
-| 原决策 | 现在 |
-| --- | --- |
-| SPA（单页应用） | Next.js App Router 服务端渲染；所有写操作打 Go API，见[前端架构](/architecture/frontend) |
-| Hash → History 模式 | 不存在「前端路由模式」概念；路由即文件（`app/f/[slug]/page.tsx`） |
-| 后端 Gin catch-all 落回 `index.html` | 页面由 Next 渲染，Nginx 只做 `/api/*` 与 `/` 的分流，见[部署](/architecture/deployment) |
+| 原决策                               | 现在                                                                                     |
+| ------------------------------------ | ---------------------------------------------------------------------------------------- |
+| SPA（单页应用）                      | Next.js App Router 服务端渲染；所有写操作打 Go API，见[前端架构](/architecture/frontend) |
+| Hash → History 模式                  | 不存在「前端路由模式」概念；路由即文件（`app/f/[slug]/page.tsx`）                        |
+| 后端 Gin catch-all 落回 `index.html` | 页面由 Next 渲染，Nginx 只做 `/api/*` 与 `/` 的分流，见[部署](/architecture/deployment)  |
 
 **保留的内核**：「同一路由 + 按类型条件渲染」这一步仍然有效——URL 统一为 `/t/{topicId}`，视图由 `topics.kind`（`0 = normal` / `1 = comic`）决定，而不是拆成 `/articles/:id` 与 `/comics/:id`（该否决结论未变）。字段名由 `pageType` / `threadType` 改为 `topics.kind`，见[数据模型](/architecture/data-model)。

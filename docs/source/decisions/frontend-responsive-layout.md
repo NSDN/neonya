@@ -136,12 +136,12 @@ Sidebar 和 BottomSheet 各自调用 `useBoards()`。
 
 失效的只有路径与框架：
 
-| 旧 | 新 |
-| --- | --- |
-| `layouts/components/` | `web/src/components/`（`SiteHeader`、`FloatingActionGroup` 等） |
-| `App.vue` 层 | `web/src/app/layout.tsx`（根布局） |
+| 旧                                    | 新                                                                 |
+| ------------------------------------- | ------------------------------------------------------------------ |
+| `layouts/components/`                 | `web/src/components/`（`SiteHeader`、`FloatingActionGroup` 等）    |
+| `App.vue` 层                          | `web/src/app/layout.tsx`（根布局）                                 |
 | `DefaultLayout` / `NoneSidebarLayout` | `app/(forum)/layout.tsx` 与 `app/(auth)/layout.tsx` 两个路由组布局 |
-| `.vue` 单文件组件 | `.tsx` + Tailwind v4 + shadcn/ui |
-| `useBoards()` 的防重复请求 | TanStack Query 缓存（同一 query key 不重复发请求） |
+| `.vue` 单文件组件                     | `.tsx` + Tailwind v4 + shadcn/ui                                   |
+| `useBoards()` 的防重复请求            | TanStack Query 缓存（同一 query key 不重复发请求）                 |
 
 宽度单位仍用 `em`，移动端浮层仍为 BottomSheet。

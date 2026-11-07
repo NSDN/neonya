@@ -25,13 +25,13 @@ web/src/
 
 ## 2. 渲染策略
 
-| 页面 | 策略 |
-| --- | --- |
-| 首页 / 版块页 | SSR，短 TTL 缓存 |
-| 主题详情 | SSR 首屏 + 客户端续读（无限滚动）；发帖后 `revalidateTag(topic:id)` |
-| 个人主页 | SSR，短 TTL |
-| 设置 / 通知 | 客户端渲染（TanStack Query） |
-| 后台 | 客户端渲染 + 服务端权限校验兜底 |
+| 页面          | 策略                                                                |
+| ------------- | ------------------------------------------------------------------- |
+| 首页 / 版块页 | SSR，短 TTL 缓存                                                    |
+| 主题详情      | SSR 首屏 + 客户端续读（无限滚动）；发帖后 `revalidateTag(topic:id)` |
+| 个人主页      | SSR，短 TTL                                                         |
+| 设置 / 通知   | 客户端渲染（TanStack Query）                                        |
+| 后台          | 客户端渲染 + 服务端权限校验兜底                                     |
 
 - 无限滚动用 `?after={postNumber}` 游标续读，配合 `topic_reads.last_read_post_number` 落点。
 - **不使用 Next 的 Server Action 承载业务逻辑**：所有写操作打 Go API，避免两处实现权限与校验。
@@ -47,9 +47,9 @@ web/src/
 
 **唯一存储格式是 Markdown，编辑器只是视图。**
 
-| 阶段 | 编辑器 | 说明 |
-| --- | --- | --- |
-| MVP | CodeMirror + 实时预览 | 便宜、可控 |
+| 阶段  | 编辑器                   | 说明                                   |
+| ----- | ------------------------ | -------------------------------------- |
+| MVP   | CodeMirror + 实时预览    | 便宜、可控                             |
 | M1 后 | WYSIWYG（优先 Milkdown） | ProseMirror 内核 + Markdown 双向序列化 |
 
 硬约束：编辑器只提供「能可靠序列化成 Markdown」的功能集；做不到无损往返的功能不放进编辑器。写入字段见[数据模型](/architecture/data-model) §4 内容格式。
@@ -62,13 +62,13 @@ web/src/
 
 ## 6. 与后端的边界
 
-| 职责 | 归属 |
-| --- | --- |
-| 参数校验（服务端权威） | Go（Huma struct tag） |
-| 表单即时校验（仅体验） | 前端（Zod），不作为安全边界 |
-| 权限判定 | Go；前端只读 `/api/v1/me` 的能力位 |
-| Markdown 渲染 | Go（goldmark + bluemonday）；**前端只插入渲染好的 HTML**，绝不二次解析 |
-| SEO / metadata | Next（`app/**/page.tsx` 的 `metadata`） |
+| 职责                   | 归属                                                                   |
+| ---------------------- | ---------------------------------------------------------------------- |
+| 参数校验（服务端权威） | Go（Huma struct tag）                                                  |
+| 表单即时校验（仅体验） | 前端（Zod），不作为安全边界                                            |
+| 权限判定               | Go；前端只读 `/api/v1/me` 的能力位                                     |
+| Markdown 渲染          | Go（goldmark + bluemonday）；**前端只插入渲染好的 HTML**，绝不二次解析 |
+| SEO / metadata         | Next（`app/**/page.tsx` 的 `metadata`）                                |
 
 ## 7. 相关决策
 

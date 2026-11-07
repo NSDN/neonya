@@ -5,13 +5,13 @@
 
 ## 1. 表清单
 
-| 领域 | 表 |
-| --- | --- |
-| 账号 | `users`、`profiles`、`roles`、`permissions`、`user_roles` |
+| 领域 | 表                                                                                      |
+| ---- | --------------------------------------------------------------------------------------- |
+| 账号 | `users`、`profiles`、`roles`、`permissions`、`user_roles`                               |
 | 内容 | `boards`、`board_moderators`、`topics`、`posts`、`post_revisions`、`tags`、`topic_tags` |
-| 阅读 | `topic_reads` |
-| 互动 | `reactions`、`bookmarks`、`follows` |
-| 运营 | `notifications`、`reports`、`audit_logs`、`uploads`、`settings` |
+| 阅读 | `topic_reads`                                                                           |
+| 互动 | `reactions`、`bookmarks`、`follows`                                                     |
+| 运营 | `notifications`、`reports`、`audit_logs`、`uploads`、`settings`                         |
 
 - 会话存 Redis，不建表；`river_*` 表由 River 自动迁移。
 - 私信（`conversations` / `conversation_participants` / `conversation_messages`）**预留到 M3**，本次不建表。
@@ -51,12 +51,12 @@ comic_topic_details
 
 **回复 = 引用。没有嵌套，最大缩进恒为 1。**
 
-| 场景 | `reply_to_post_id` | `quoted_excerpt` | 显示引用块 | 通知谁 |
-| --- | --- | --- | --- | --- |
-| 回复主题 | `NULL` | `NULL` | ❌ | 主题作者 |
-| 引用主题正文（全文/划句） | 首条 `#1` 的 id | 片段 | ✅ | 主题作者 |
-| 引用某条（全文/划句） | `X` | 片段 | ✅ | `X` 的作者 |
-| 回复某条但删掉引用块 | `X` | `NULL` | ❌ | `X` 的作者 |
+| 场景                      | `reply_to_post_id` | `quoted_excerpt` | 显示引用块 | 通知谁     |
+| ------------------------- | ------------------ | ---------------- | ---------- | ---------- |
+| 回复主题                  | `NULL`             | `NULL`           | ❌         | 主题作者   |
+| 引用主题正文（全文/划句） | 首条 `#1` 的 id    | 片段             | ✅         | 主题作者   |
+| 引用某条（全文/划句）     | `X`                | 片段             | ✅         | `X` 的作者 |
+| 回复某条但删掉引用块      | `X`                | `NULL`           | ❌         | `X` 的作者 |
 
 ```sql
 posts
@@ -94,13 +94,13 @@ topic_reads                       -- 无限流的前提
 
 **Markdown 源文是唯一真相，HTML 只是渲染缓存。**
 
-| `posts` 字段 | 用途 |
-| --- | --- |
-| `content_md` | Markdown 源文（可含白名单语义标签），**唯一真相** |
-| `content_html` | 渲染缓存，可从 `content_md` 全量重建，允许为空 |
+| `posts` 字段     | 用途                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| `content_md`     | Markdown 源文（可含白名单语义标签），**唯一真相**            |
+| `content_html`   | 渲染缓存，可从 `content_md` 全量重建，允许为空               |
 | `render_version` | 渲染器版本号；升级后按 `WHERE render_version < N` 精准重渲染 |
-| `content_plain` | 抽取的纯文本，供 `pg_trgm` 搜索与 RSS 摘要 |
-| `content_format` | `0` = markdown（默认），`1` = trusted_html（仅管理员公告） |
+| `content_plain`  | 抽取的纯文本，供 `pg_trgm` 搜索与 RSS 摘要                   |
+| `content_format` | `0` = markdown（默认），`1` = trusted_html（仅管理员公告）   |
 
 三条原则：
 
@@ -115,11 +115,11 @@ topic_reads                       -- 无限流的前提
 
 按角色分级：
 
-| 内容 | 作者 | 允许 |
-| --- | --- | --- |
-| 主题 / 回复 | 所有用户 | Markdown + 扩展语法 + 语义标签白名单 |
-| 公告 / 版规 / 关于页 | 管理员 | 受限 HTML（仍禁 `script` / `iframe` / `style`） |
-| 拖拽排版的富文本页 | 管理员 | 独立 `pages` 表，不混进 `posts` |
+| 内容                 | 作者     | 允许                                            |
+| -------------------- | -------- | ----------------------------------------------- |
+| 主题 / 回复          | 所有用户 | Markdown + 扩展语法 + 语义标签白名单            |
+| 公告 / 版规 / 关于页 | 管理员   | 受限 HTML（仍禁 `script` / `iframe` / `style`） |
+| 拖拽排版的富文本页   | 管理员   | 独立 `pages` 表，不混进 `posts`                 |
 
 **渲染时机：写时渲染。** 发帖/编辑时在同一事务内算出 `content_html` / `content_plain` / `render_version`，读路径只读不写。
 
@@ -136,13 +136,13 @@ topic_reads                       -- 无限流的前提
 
 ## 6. 索引
 
-| 索引 | 覆盖场景 |
-| --- | --- |
-| `topics(board_id, is_pinned DESC, last_post_at DESC)` | 版块主题列表 |
-| `posts(topic_id, post_number)` | 扁平流与游标分页 |
-| `posts(reply_to_post_id)` | 被引用索引 |
-| `posts(author_id, created_at DESC)` | 个人主页 |
-| `pg_trgm` GIN on `topics.title` | 标题模糊搜索 |
+| 索引                                                  | 覆盖场景         |
+| ----------------------------------------------------- | ---------------- |
+| `topics(board_id, is_pinned DESC, last_post_at DESC)` | 版块主题列表     |
+| `posts(topic_id, post_number)`                        | 扁平流与游标分页 |
+| `posts(reply_to_post_id)`                             | 被引用索引       |
+| `posts(author_id, created_at DESC)`                   | 个人主页         |
+| `pg_trgm` GIN on `topics.title`                       | 标题模糊搜索     |
 
 ## 7. 通用约定
 
